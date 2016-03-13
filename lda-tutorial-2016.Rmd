@@ -4,6 +4,8 @@ output:
   pdf_document:
     toc: true
     number_sections: true
+    includes:
+      in_header: header.tex
 fontsize: 12pt
 geometry: margin=1in
 bibliography: twitter.bib
@@ -24,9 +26,9 @@ With the tremendous rise in computing speed and memory capacity over the last qu
 
 
 
-## Latent Dirichlet Allocation
+# Latent Dirichlet Allocation
 
-@blei2003latent
+@blei2003latent introduced 
 
 # Computational implementation of LDA with R
 
