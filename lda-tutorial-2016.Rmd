@@ -1,0 +1,37 @@
+---
+title: Topic Modeling Tutorial for Communications Researchers
+output: 
+  pdf_document:
+    toc: true
+    number_sections: true
+fontsize: 12pt
+geometry: margin=1in
+bibliography: twitter.bib
+csl: apa.csl
+---
+
+# Overview
+
+We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples. With the tremendous rise in computing speed and storage capacity over the last quarter century, researchers working at the interface of quantitative methods and social sciences began to treat written texts as data. In so doing,
+
+
+# History of Topic Modeling
+
+
+
+
+## Latent Dirichlet Allocation
+
+@blei2003latent
+
+
+
+
+
+
+# References
+
+
+
+
+
