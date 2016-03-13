@@ -28,7 +28,16 @@ With the tremendous rise in computing speed and memory capacity over the last qu
 
 # Latent Dirichlet Allocation
 
-@blei2003latent introduced 
+@blei2003latent introduced a generative statistical model called "latent dirichlet allocation" in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. 
+
+## What is the model?
+
+## What are its assumptions?
+
+## What are its limitations? 
+
+
+
 
 # Computational implementation of LDA with R
 
@@ -38,6 +47,16 @@ We present below instructions and code for using LDA in the R statistical enviro
 
 - LDAvis
 - wordcloud
+
+# Results from Tweets Analysis
+
+# Discussion
+
+# Future directions
+
+
+# Online resources
+
 
 
 # References
