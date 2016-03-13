@@ -12,7 +12,11 @@ csl: apa.csl
 
 # Overview
 
-We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples. With the tremendous rise in computing speed and storage capacity over the last quarter century, researchers working at the interface of quantitative methods and social sciences began to treat written texts as data. In so doing,
+We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples. 
+
+With the tremendous rise in computing speed and memory capacity over the last quarter century, researchers working at the interface of quantitative methods and social sciences began to treat written texts as data. While text analysis is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of written documents. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide computer code (in the R statistical language) that implements these methods.
+
+
 
 
 # History of Topic Modeling
@@ -24,7 +28,9 @@ We present a concise summary of a collection of machine learning techniques that
 
 @blei2003latent
 
+# Computational implementation of LDA with R
 
+We present below instructions and code for using LDA in the R statistical environment [@r2015].
 
 
 
