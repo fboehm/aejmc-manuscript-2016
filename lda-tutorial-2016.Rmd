@@ -1,5 +1,5 @@
 ---
-title: Topic Modeling Tutorial for Communications Researchers
+title: Topic Modeling for Communications Researchers
 output: 
   pdf_document:
     toc: true
@@ -12,27 +12,48 @@ bibliography: twitter.bib
 csl: apa.csl
 ---
 
-# Overview
+# Motivation
 
-We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples to demonstrate their value. 
+We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? They all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
+
+Big data presents big opportunities for communications researchers. We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples to demonstrate their value to communications research questions.
+
+# Overview
 
 With the tremendous rise in computing speed and memory capacity over the last quarter century, researchers working at the interface of quantitative methods and social sciences gained the capacity to treat written texts as data. While document analysis is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide computer code (in the R programming language) that implements these methods.
 
 
 
 
-# History of Topic Modeling
-
-
-
-
 # Latent Dirichlet Allocation
 
-@blei2003latent introduced a generative statistical model called "latent dirichlet allocation" in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. 
+@blei2003latent introduced a generative statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. 
+
+## What is the intuition behind the model?
+
+As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". 
+
+An example may help to illustrate our point. @blei2007correlated fitted a 100-topic model to 17,000 research articles from the journal Science. They found that a 1996 article "Seeking Life's Bare (Genetic) Necessities" [@pennisi1996seeking] exhibited topics related to "evolution", "genetics", "disease", and "computers".
+**Would it be more sensible to use RT's Super Bowl results here?**
+
+
+
+
+
 
 ## What is the model?
 
+LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purpose of LDA, then, is to discover the unobserved topics from the texts. 
+
+
+
+
+
 ## What are its assumptions?
+
+
+
+
 
 ## What are its limitations? 
 
