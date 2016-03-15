@@ -1,0 +1,29 @@
+---
+title: "Goals for tutorial article"
+author: "Fred Boehm"
+date: "March 14, 2016"
+output: html_document
+---
+
+# Objectives
+
+After studying the article the reader will be able to define the following terms:
+
+1. generative model
+2. latent dirichlet allocation
+3. topic model
+4. topic
+5. latent variable
+6. conditional distribution (non-technical definition)
+7. 
+
+- be excited about topic modeling & research in communications
+- want to seek out computer scientists or statisticians who may be collaborators
+
+
+# Ideas
+
+- include a timeline in the history section... start in 1999 with Hofmann's pLSA
+
+
+

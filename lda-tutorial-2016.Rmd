@@ -27,7 +27,7 @@ With the tremendous rise in computing speed and memory capacity over the last qu
 
 # Latent Dirichlet Allocation
 
-@blei2003latent introduced a generative statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. 
+@blei2003latent introduced a (generative) statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis.
 
 ## What is the intuition behind the model?
 
@@ -57,7 +57,7 @@ LDA models have a hiearchical structure in which words make up documents, and a 
 
 ## What are its limitations? 
 
-
+The original LDA model However, LDA's flexibility and adaptability have reduced the impact of its initial limitations. In the last decade, researchers have devised extensions of LDA, such as "dynamic LDA", that enable one to model topic evolution over time. Another extension of LDA, which is known as "correlated LDA", accounts for correlations among topics. 
 
 
 # Computational implementation of LDA with R
@@ -71,9 +71,14 @@ We present below instructions and code for using LDA in the R statistical enviro
 
 # Results from Tweets Analysis
 
+
+
 # Discussion
 
+
+
 # Future directions
+
 
 
 # Online resources
