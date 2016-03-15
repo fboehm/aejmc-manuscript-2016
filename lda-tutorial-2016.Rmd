@@ -33,7 +33,14 @@ With the tremendous rise in computing speed and memory capacity over the last qu
 
 As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". 
 
-An example may help to illustrate our point. @blei2007correlated fitted a 100-topic model to 17,000 research articles from the journal Science. They found that a 1996 article "Seeking Life's Bare (Genetic) Necessities" [@pennisi1996seeking] exhibited topics related to "evolution", "genetics", "disease", and "computers".
+An example may help to illustrate our point. 
+
+- which example to use here?
+
+We analyzed 
+
+
+@blei2007correlated fitted a 100-topic model to 17,000 research articles from the journal Science. They found that a 1996 article "Seeking Life's Bare (Genetic) Necessities" [@pennisi1996seeking] exhibited topics related to "evolution", "genetics", "disease", and "computers".
 **Would it be more sensible to use RT's Super Bowl results here?**
 
 
@@ -43,7 +50,9 @@ An example may help to illustrate our point. @blei2007correlated fitted a 100-to
 
 ## What is the model?
 
-LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purpose of LDA, then, is to discover the unobserved topics from the texts. 
+LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purposes of LDA, then, are to discover the unobserved topics from the texts and to characterize documents by the topics that they contain.
+
+We distinguish generative models from discriminative models. A generative model, such as LDA, is one in which we specify a joint probability distribution for all variables (including those that are unobserved) and, thus, enable the creation of observations. On the other hand, a discriminative model relies on a conditional distribution and doesn't permit generation of samples from the joint distribution. 
 
 
 
