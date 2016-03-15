@@ -2,7 +2,7 @@
 title: Topic Modeling for Communications Researchers
 output: 
   pdf_document:
-    toc: true
+    toc: false
     number_sections: true
     includes:
       in_header: header.tex
@@ -27,11 +27,30 @@ With the tremendous rise in computing speed and memory capacity over the last qu
 
 # Latent Dirichlet Allocation
 
-@blei2003latent introduced a (generative) statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis.
+@blei2003latent introduced a (generative) statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. Researchers in a wide range of disciplines - including genetics, linguistics, psychology, political science, and others - have enthusiastically adopted LDA and related methods. 
+
+
 
 ## What is the intuition behind the model?
 
-As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". 
+As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". In a given collection of documents, which we term a "corpus" of documents, we assume that relatively few topics - on the order of 10 to 50 for most analyses - are present. 
+
+## In what sense is the model 'generative'?
+
+We say that LDA is a generative model because we specify a joint probability distribution that allows generation of observed samples. In a more precise manner, we specify a distribution over topics (again, where topics are themselves distributions over words) that is shared by the corpus. Each document can be viewed as a draw from this distribution. The observed topic (distribution over words) tells us how the words are distributed. 
+
+
+# LDA with statistical terminology
+
+We can also describe LDA with more formal statistical terminology. We let $\beta_1, \beta_2, ..., \beta_K$ be the $K$ topics, where each $\beta_k$ is a distribution over the vocabulary. Topic weights (or proportions) we denote by $\theta_d$ for the $d^{th}$ document. We let $\theta_{d,k}$ be the topic proportion for topic $k$ in document $d$. Topic assignments for the $d^{th}$ document are $z_d$, where $z_{d,n}$ is the topic assignment for the $n^{th}$ word in the $d^{th}$ document. Observed words for the $d^{th}$ document are $w_d$, where $w_{d, n}$ is the $n^{th}$ word for the $d^{th}$ document.
+
+We then use the above notation to specify the joint distribution for all variables in the model:
+
+$$p(\beta_{1:K}, \theta_{1:D}, z_{1:D}, w_{1:D}) = \prod_{i = 1}^Kp(\beta_i)\prod_{d = 1}^Dp(\theta_d)\left( \prod_{n = 1}^N p(z_{d,n}|\theta_d)p(w_{d,n}|\beta_{1:K}, z_{d,n})\right)$$
+
+The vertical bars in the last expressions denote conditional probabilities. Note that the topic assignments $z_{d,n}$ depend on the document's topic proportions. Whatismore, the observed word $w_{d,n}$ has a distribution that depends on both the entire collection of topics, $\beta_{1:K}$, and the topic, $z_{d,n}$, assigned to that word.
+
+# Example of LDA with print media
 
 An example may help to illustrate our point. 
 
@@ -72,6 +91,10 @@ The original LDA model However, LDA's flexibility and adaptability have reduced 
 # Computational implementation of LDA with R
 
 We present below instructions and code for using LDA in the R statistical environment [@r2015].
+
+
+
+
 
 # Visualizing topics
 
