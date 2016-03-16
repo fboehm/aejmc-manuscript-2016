@@ -12,6 +12,12 @@ bibliography: twitter.bib
 csl: apa.csl
 ---
 
+# Abstract
+
+We present a non-technical introduction to topic modeling for communications researchers. We discuss important statistical models and illustrate these methods with example data from communications scholarship. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
+
+
+
 # Motivation
 
 We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? They all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
@@ -93,13 +99,24 @@ The original LDA model However, LDA's flexibility and adaptability have reduced 
 We present below instructions and code for using LDA in the R statistical environment [@r2015].
 
 
-
+# Interpreting results of topic modeling
 
 
 # Visualizing topics
 
 - LDAvis
 - wordcloud
+
+Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. 
+
+  Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
+  For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
+  One newly developed method, which is implemented in the LDAvis R package, uses a singular value decomposition of the fitted document-topic matrix to calculate principal components. Each topic is then plotted in two dimensions, where the axes represent the first two principal components. The LDAvis R package enhances this second approach by making the figures interactive with D3 javascript.
+  
+  
+  
+
+
 
 # Results from Tweets Analysis
 
@@ -114,6 +131,8 @@ We present below instructions and code for using LDA in the R statistical enviro
 
 
 # Online resources
+
+David Mimno, a Cornell University scholar, curates an annotated bibliography of topic modeling research[@mimno2016topic]. His bibliography is available at this url: http://mimno.infosci.cornell.edu/topics.html
 
 
 
