@@ -1,5 +1,5 @@
 ---
-title: Topic Modeling for Communications Researchers
+title: Data Analysis with Topic Models for Communications Researchers
 output: 
   pdf_document:
     toc: false
@@ -94,13 +94,15 @@ We distinguish generative models from discriminative models. A generative model,
 The original LDA model However, LDA's flexibility and adaptability have reduced the impact of its initial limitations. In the last decade, researchers have devised extensions of LDA, such as "dynamic LDA", that enable one to model topic evolution over time. Another extension of LDA, which is known as "correlated LDA", accounts for correlations among topics. 
 
 
-# Computational implementation of LDA with R
+# Inference in topic models
 
-We present below instructions and code for using LDA in the R statistical environment [@r2015].
+Existing strategies for fitting topic models can be divided into two classes: 1. variational Bayes methods and 2. sampling methods. Variational Bayes methods try to approximate the posterior distribution by maximizing a lower bound. In this sense, variational Bayes methods approach topic model fitting from a computer science optimization perspective. Alternatively, sampling methods, such as those based on Markov chain monte carlo (MCMC) approaches, draw samples from (an approximation to) the posterior distribution and estimate distributional parameters by their empirical sample statistics. 
 
+Computational implementations of both classes of strategies are freely available for the R statistical computing language. 
 
 # Interpreting results of topic modeling
 
+Statistical inference for topic models yields estimates for topics (i.e., distributions over words), assignments of words (within documents) to topics, and weights of topics in each document. 
 
 # Visualizing topics
 
@@ -133,6 +135,13 @@ Visualizing topic modeling results is an active area of research. We present bel
 # Online resources
 
 David Mimno, a Cornell University scholar, curates an annotated bibliography of topic modeling research[@mimno2016topic]. His bibliography is available at this url: http://mimno.infosci.cornell.edu/topics.html
+
+
+# Computational implementation of LDA with R
+
+We present below instructions and code for using LDA in the R statistical computing language [@r2015].
+**Ask Dhavan about including code?** **Maybe as an appendix?**
+
 
 
 
