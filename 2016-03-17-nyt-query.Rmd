@@ -1,0 +1,41 @@
+---
+title: "Using NYTimes Article Search API"
+author: "Fred Boehm"
+date: "March 17, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We try to query the NY Times Article Search API using the `rtimes` R package. Note that we've stored in our .Rprofile file the key for the Article Search API.
+
+```{r nyt-query}
+library(rtimes)
+
+fields <- c("web_url", "snippet", "lead_paragraph", "abstract", "print_page", "blog", "source", "multimedia", "headline", "keywords", "pub_date", "document_type", "news_desk", "byline", "type_of_material", "_id", "word_count")
+
+
+out <- as_search(q = "gun", begin_date = "20151001", end_date = '20151201', fl = fields, key = "7642da179286f44d2465cc3830bcf149:18:61971189")
+
+```
+
+
+
+```{r}
+library(RCurl)
+library(XML)
+webpage <- out$data$docs[[10]]$web_url
+webpage <- readLines(tc <- textConnection(webpage)); close(tc)
+pagetree <- htmlTreeParse(webpage, error=function(...){}, useInternalNodes = TRUE)
+# parse the tree by tables
+x <- xpathSApply(pagetree, "//*/table", xmlValue)  
+# do some clean up with regular expressions
+x <- unlist(strsplit(x, "\n"))
+x <- gsub("\t","",x)
+x <- sub("^[[:space:]]*(.*?)[[:space:]]*$", "\\1", x, perl=TRUE)
+x <- x[!(x %in% c("", "|"))]
+```
+
+

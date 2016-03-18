@@ -2,6 +2,7 @@
 title: Data Analysis with Topic Models for Communications Researchers
 output: 
   pdf_document:
+    keep_tex: true
     toc: false
     number_sections: true
     includes:
@@ -14,19 +15,44 @@ csl: apa.csl
 
 # Abstract
 
-We present a non-technical introduction to topic modeling for communications researchers. We discuss important statistical models and illustrate these methods with example data from communications scholarship. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
+We present a non-technical introduction to data analysis with topic models for communications researchers. We discuss important statistical models and illustrate these methods with data from communications scholarship. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
 
 
 
 # Motivation
 
-We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? They all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
+We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
 
 Big data presents big opportunities for communications researchers. We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples to demonstrate their value to communications research questions.
 
 # Overview
 
-With the tremendous rise in computing speed and memory capacity over the last quarter century, researchers working at the interface of quantitative methods and social sciences gained the capacity to treat written texts as data. While document analysis is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide computer code (in the R programming language) that implements these methods.
+The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+
+# What types of data analysis problems have others addressed with topic modeling?
+
+- can we find several (3 or 4) motivating examples?
+1. genetics & ancestral populations -- STRUCTURE paper 2000
+2. political science 2010 paper... on what??
+3. what did John Dawson do?
+
+# What types of data? 
+
+1. streaming... what makes this interesting
+2. hierarchical... how?
+3. Victorian Eyes
+
+
+
+
+
+
+
+
+
+# Box's Loop & Data analysis
+
+The perspective that guides our data analysis is based on ideas of the University of Wisconsin-Madison statistician George Box and coworkers. @blei2014build extends the ideas of Box and colleagues to the specific case of iterative refinement of topic models. Box (CITATION) articulated a process of scientific inquiry and statistical collaboration in which scientists put forth a hypothesis about the natural world, and, with assistance from statisticians, design experiments to test the scientific hypothesis. After statistical analysis of the experimental data, the scientific hypothesis is refined, which leads to design and implementation of another experiment, and the iterative process between scientific hypothesis and experiment continues. Box also suggested (CITATION) that a statistician, working in collaboration with scientists, might use scientific questions as motivation to develop new statistical methods in experimental design and data analysis. In this sense, there is a second iterative loop by which a statistical researcher develops novel methods because of their immediate need to answer a scientific research question. @blei2014build adapts these iterative processes to the case of latent variable models, such as LDA and related models. He argues that we view the use of a topic model for a specific data analysis task as an iterative procedure in which one proposes a simple topic model for the data analysis, fits the model, interprets the results, and then, if needed, refines the topic model with the goal of achieving data analysis results that are more consistent with the research goals. 
 
 
 
@@ -60,7 +86,7 @@ The vertical bars in the last expressions denote conditional probabilities. Note
 
 An example may help to illustrate our point. 
 
-- which example to use here?
+- which example to use here? NY Times
 
 We analyzed 
 
@@ -98,18 +124,21 @@ The original LDA model However, LDA's flexibility and adaptability have reduced 
 
 Existing strategies for fitting topic models can be divided into two classes: 1. variational Bayes methods and 2. sampling methods. Variational Bayes methods try to approximate the posterior distribution by maximizing a lower bound. In this sense, variational Bayes methods approach topic model fitting from a computer science optimization perspective. Alternatively, sampling methods, such as those based on Markov chain monte carlo (MCMC) approaches, draw samples from (an approximation to) the posterior distribution and estimate distributional parameters by their empirical sample statistics. 
 
-Computational implementations of both classes of strategies are freely available for the R statistical computing language. 
+Computational implementations of both classes of strategies are freely available for the R statistical computing language. We include code to use these free implementations in the appendix.  
 
 # Interpreting results of topic modeling
 
 Statistical inference for topic models yields estimates for topics (i.e., distributions over words), assignments of words (within documents) to topics, and weights of topics in each document. 
+
+The user must impose meaning on the topics. For instance, a topic may put heavy weights on the words "genetics", "gene", "regulation", "DNA", "transcription", and "RNA". The data analyst needs to identify the similarities among these words - namely, that they describe concepts related to genetics and molecular biology. Fortunately, topic modeling procedures often generate topics that can be summarized in one or two words once the data analyst has inspected the most heavily weighted terms (for a given topic). 
+
 
 # Visualizing topics
 
 - LDAvis
 - wordcloud
 
-Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. 
+  Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. 
 
   Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
   For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
@@ -120,8 +149,35 @@ Visualizing topic modeling results is an active area of research. We present bel
 
 
 
-# Results from Tweets Analysis
+# Results from NY Times "Obama" Analysis
 
+\begin{figure}
+\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-3.pdf}
+\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc3}}
+\end{figure}
+
+We examine several wordclouds of topics derived from our analysis of 267 New York Times articles that contain the word "Obama". We notice in Figure \ref{fig:wc3} words that relate to civil rights. Words that emphasize race or sexual orientation feature prominently. It's possible that if we were to fit a model with more topics, say 50, that race and sexual orientation might occupy distinct topics.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-4.pdf}
+\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc4}}
+\end{figure}
+
+Figure \ref{fig:wc4} contains words that deal with Barack Obama's biography. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-5.pdf}
+\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc5}}
+\end{figure}
+
+Whatismore, Figure \ref{fig:wc5} highlights the use of political terms in articles that contain the word "Obama". 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-8.pdf}
+\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc8}}
+\end{figure}
+
+International relations words make up the topic visualized in Figure \ref{fig:wc8}.
 
 
 # Discussion
