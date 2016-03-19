@@ -83,6 +83,7 @@
 \usepackage{setspace}
 \doublespacing
 \usepackage[nomarkers,figuresonly]{endfloat}
+\usepackage[colorinlistoftodos]{todonotes}
 
 % Redefines (sub)paragraphs to behave more like sections
 \ifx\paragraph\undefined\else
@@ -97,6 +98,8 @@
 \begin{document}
 \maketitle
 
+\listoftodos
+
 \section{Abstract}\label{abstract}
 
 We present a non-technical introduction to data analysis with topic
@@ -106,16 +109,18 @@ scholarship. We complement our discussion with computer code (in the R
 computing language) that implements these methods. We close with
 thoughts about the future value of topic modeling to communications
 researchers.
+\todo[inline]{Do I want to emphasize data analysis more? I think so}
 
 \section{Motivation}\label{motivation}
 
+\todo[color=pink]{Can we write a scenario like that of Blei's 2012 article?}
+
 We are in the big data era. Social media inundates us with status
 updates and tweets, while bloggers share their views on current events.
-Website creation has become easier than ever. These new media interact
-with more established media, such as print news media, television, and
-radio. What do they have in common? One answer is that they all can be
-viewed as data sources in which words - whether written or spoken,
-tweeted or blogged - are the data.
+These new media interact with more established media, such as print news
+media, television, and radio. What do they have in common? One answer is
+that they all can be viewed as data sources in which words - whether
+written or spoken, tweeted or blogged - are the data.
 
 Big data presents big opportunities for communications researchers.
 
@@ -138,6 +143,8 @@ models. We detail below, with limited use of statistical terminology,
 how these methods work and why they may be useful in communications
 research. We also provide an appendix with computer code (in the R
 programming language) that implements these methods.
+
+\todo[color = violet]{the above paragraphs are disjointed}
 
 \section{What types of data analysis problems have others addressed with
 topic
@@ -174,6 +181,10 @@ modeling?}\label{what-types-of-data-analysis-problems-have-others-addressed-with
 \end{enumerate}
 
 \section{Box's Loop \& Data analysis}\label{boxs-loop-data-analysis}
+
+\todo[inline, color=pink]{Need one or two figures here}
+
+\missingfigure{Box's loop from 1976? Blei 2014?}
 
 The perspective that guides our data analysis is based on ideas of the
 University of Wisconsin-Madison statistician George Box and coworkers.

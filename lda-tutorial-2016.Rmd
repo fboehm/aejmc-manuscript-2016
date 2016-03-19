@@ -13,15 +13,20 @@ bibliography: twitter.bib
 csl: apa.csl
 ---
 
+\listoftodos
+
+
 # Abstract
 
 We present a non-technical introduction to data analysis with topic models for communications researchers. We discuss important statistical models and illustrate these methods with data from communications scholarship. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
-
+\todo[inline]{Do I want to emphasize data analysis more? I think so}
 
 
 # Motivation
 
-We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
+\todo[color=pink]{Can we write a scenario like that of Blei's 2012 article?}
+
+We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
 
 Big data presents big opportunities for communications researchers. 
 
@@ -31,6 +36,9 @@ We present a concise summary of a collection of machine learning techniques that
 # Overview
 
 The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+
+\todo[color = violet]{the above paragraphs are disjointed}
+
 
 # What types of data analysis problems have others addressed with topic modeling?
 
@@ -54,6 +62,10 @@ The tremendous rise in computing speed and memory capacity, coupled with the inc
 
 
 # Box's Loop & Data analysis
+
+\todo[inline, color=pink]{Need one or two figures here}
+
+\missingfigure{Box's loop from 1976? Blei 2014?}
 
 The perspective that guides our data analysis is based on ideas of the University of Wisconsin-Madison statistician George Box and coworkers. @blei2014build extends the ideas of Box and colleagues to the specific case of iterative refinement of topic models. Box (CITATION) articulated a process of scientific inquiry and statistical collaboration in which scientists put forth a hypothesis about the natural world, and, with assistance from statisticians, design experiments to test the scientific hypothesis. After statistical analysis of the experimental data, the scientific hypothesis is refined, which leads to design and implementation of another experiment, and the iterative process between scientific hypothesis and experiment continues. Box also suggested (CITATION) that a statistician, working in collaboration with scientists, might use scientific questions as motivation to develop new statistical methods in experimental design and data analysis. In this sense, there is a second iterative loop by which a statistical researcher develops novel methods because of their immediate need to answer a scientific research question. @blei2014build adapts these iterative processes to the case of latent variable models, such as LDA and related models. He argues that we view the use of a topic model for a specific data analysis task as an iterative procedure in which one proposes a simple topic model for the data analysis, fits the model, interprets the results, and then, if needed, refines the topic model with the goal of achieving data analysis results that are more consistent with the research goals. 
 
