@@ -23,7 +23,10 @@ We present a non-technical introduction to data analysis with topic models for c
 
 We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. Website creation has become easier than ever. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
 
-Big data presents big opportunities for communications researchers. We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples to demonstrate their value to communications research questions.
+Big data presents big opportunities for communications researchers. 
+
+
+We present a concise summary of a collection of machine learning techniques that, together, are called "topic modeling". We discuss how these methods may be used in communications research, and we apply topic models to illustrative examples to demonstrate their value to communications research questions.
 
 # Overview
 
