@@ -1,36 +1,12 @@
-\documentclass[12pt,]{article}
+\documentclass[12pt]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
-  \newcommand{\euro}{€}
-\fi
-% use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
 % use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
 \usepackage[margin=1in]{geometry}
-\ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
-\else
-  \usepackage[unicode=true]{hyperref}
-\fi
+\usepackage[unicode=true]{hyperref}
 \hypersetup{breaklinks=true,
             bookmarks=true,
             pdfauthor={},
@@ -49,78 +25,32 @@
 % Scale images if necessary, so that they will not overflow the page
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
-
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
 %%% Change title format to be more compact
 \usepackage{titling}
+\usepackage[colorinlistoftodos]{todonotes}
 
-% Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-  \title{Data Analysis with Topic Models for Communications Researchers}
-  \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-  \author{}
-  \preauthor{}\postauthor{}
-  \date{}
-  \predate{}\postdate{}
+\title{Data Analysis with Topic Models for Communications Researchers}
+\date{\today}
 
 \usepackage{setspace}
 \doublespacing
 \usepackage[nomarkers,figuresonly]{endfloat}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{ifthen}
-
-% \usepackage[top=10mm, bottom=10mm, left=10mm, right=10mm,includehead,includefoot]{geometry}
-
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{}
-\chead{}
-\rhead{XXXXX}
 
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
 
 \begin{document}
-\maketitle
 
-\pagestyle{fancy}
+%\uppercase{\pdftitle}
+
 
 \listoftodos
 
 \section{Abstract}\label{abstract}
 
-We present a non-technical introduction to data analysis with topic
-models for communications researchers. We motivate the discussion with a
-research question from social media communications research. We then
-discuss statistical aspects of topic models as we illustrate these
-methods with data from Twitter. We complement our discussion with
-computer code (in the R computing language) that implements these
-methods. We close with thoughts about the future value of topic modeling
-to communications researchers.
+We present a non-technical introduction to data analysis with topic models for communications researchers. We discuss important statistical models and illustrate these methods with data from communications scholarship. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
 \todo[inline]{Do I want to emphasize data analysis more? I think so}
 
 \section{Motivation}\label{motivation}
@@ -134,20 +64,13 @@ media, television, and radio. What do they have in common? One answer is
 that they all can be viewed as data sources in which words - whether
 written or spoken, tweeted or blogged - are the data.
 
-Think about how we currently browse media. Let's suppose that we want to
-read about mass shootings. We might search for the key words ``mass''
-and ``shooting''. Doing so, we will find some articles that deal with
-mass shootings, but other results may deal with other types of
-``shootings'', such as film shooting or television shooting. Even if we
-specify that the two-word phrase ``mass shooting'' must appear in our
-results, we still may find some articles that merely mention mass
-shootings without focusing on one or more mass shootings.
+Big data presents big opportunities for communications researchers.
 
-Blei (2012) envisions an alternative search strategy in which we search
-for articles that are \emph{about} ``mass shootings''. Some of the
-resulting articles would have the phrase ``mass shooting'', but
-containing that two-word phrase is not required; the sole requirement is
-that the article focus on one or more mass shootings.
+We present a concise summary of a collection of machine learning
+techniques that, together, are called ``topic modeling''. We discuss how
+these methods may be used in communications research, and we apply topic
+models to illustrative examples to demonstrate their value to
+communications research questions.
 
 \section{Overview}\label{overview}
 
