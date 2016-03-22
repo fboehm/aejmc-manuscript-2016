@@ -30,48 +30,139 @@ We present a non-technical introduction to data analysis with topic models for c
 
 We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
 
-Think about how we currently browse media. Let's suppose that we want to read about mass shootings. We might search for the key words "mass" and "shooting". Doing so, we will find some articles that deal with mass shootings, but other results may deal with other types of "shootings", such as film shooting or television shooting. Even if we specify that the two-word phrase "mass shooting" must appear in our results, we still may find some articles that merely mention mass shootings without focusing on one or more mass shootings. 
+Think about how we currently browse media. Let's suppose that we want to read about mass shootings. We might search for the key words "mass" and "shooting". Doing so, we will find some articles that deal with mass shootings, but other results may deal with other types of "shootings", such as film shooting or accidental shooting. Even if we specify that the two-word phrase "mass shooting" must appear in our results, we still may find some articles that merely mention mass shootings without focusing on one or more mass shootings. 
 
 @blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. That is, we'd like to see all of the articles that have the theme, or "topic", mass shooting. Topic modeling is one method that may ultimately enable us to do the theme-based browsing that @blei2012probabilistic suggests. 
 
-"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a large collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
 
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(echo=FALSE) # hide source code in the document
 ```
 
-```{r chunka}
-# chunk a
-1+1
+```{r read-nyt}
+tx1 <- scan(file = "~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-02.TXT", what = "character", blank.lines.skip = TRUE, sep = "\n", encoding = "UTF-8", skipNul = TRUE) 
+tx2 <- scan(file = "~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-04.TXT", what = "character", blank.lines.skip = TRUE, sep = "\n", encoding = "UTF-8", skipNul = TRUE) 
+tx <- c(tx1, tx2)
+```
+
+```{r split_articles}
+library(wordtools) #install my R package 'wordtools'
+tx_list <- split_tx(tx = tx, patt = "Copyright 20")
+```
+
+```{r strings}
+library(stringr)
+tx_list2<- sapply(FUN = function(x)x[-(1:which(str_detect(string = x, pattern = "LENGTH")))], X = tx_list) 
+```
+
+
+```{r chekc}
+myfun <- function(x, pattern = "Web Blog"){
+  collapsed <- paste(x, collapse = " ")
+  !stringr::str_detect(collapsed, pattern = pattern)
+}
+  
+
+indswb <- sapply(FUN = myfun, X = tx_list2)
+indsurl <- sapply(FUN = myfun, pattern = "URL", X = tx_list2)
+cbind(indswb, indsurl)
+```
+
+```{r}
+library(magrittr)
+good_art <- tx_list2[indswb] %>% 
+  sapply(FUN = function(x){x[-(which(str_detect(x, "URL")):length(x))]})
+```
+
+```{r split_and_remove_punctuation}
+library(tm)
+stopwords <- tm::stopwords("SMART")
+good2 <- sapply(FUN = function(x)paste(x, collapse = " "), X = good_art)  %>%
+  stringr::str_split( pattern = " ") %>%
+  sapply(FUN = function(x) gsub("'", "", x)) %>% # remove apostrophes
+  sapply(FUN = function(x) gsub("[[:punct:]]", " ", x)) %>%  # replace punctuation with space
+  sapply(FUN = function(x) gsub("[[:cntrl:]]", " ", x)) %>% # replace control characters with space
+  sapply(FUN = function(x) gsub("^[[:space:]]+", "", x)) %>% # remove whitespace at beginning of documents
+  sapply(FUN = function(x) gsub("[[:space:]]+$", "", x)) %>% # remove whitesp
+  sapply(FUN = function(x)tolower(x)) %>%
+  sapply(FUN = function(x)x[!(x == "")]) %>% # remove elements that are ""
+  sapply(FUN = function(x)x[!(x %in% stopwords)]) # remove stopwords
+```
+
+```{r}
+# from http://cpsievert.github.io/LDAvis/reviews/reviews.html
+# compute the table of terms:
+n_min <- 3
+term_table <- table(unlist(good2)) %>% 
+  sort(decreasing = TRUE)
+term_table <- term_table[term_table >= n_min]
+vocab <- names(term_table)
+get_terms <- function(x) {
+  index <- match(x, vocab)
+  index <- index[!is.na(index)]
+  rbind(as.integer(index - 1), as.integer(rep(1, length(index))))
+}
+documents <- lapply(good2, get_terms)
+```
+
+```{r, summary_stats}
+# Compute some statistics related to the data set:
+D <- length(documents)  # number of documents (2,000)
+W <- length(vocab)  # number of terms in the vocab (14,568)
+doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document [312, 288, 170, 436, 291, ...]
+N <- sum(doc.length)  # total number of tokens in the data (546,827)
+term.frequency <- as.integer(term_table)  # frequencies of terms in the corpus [8939, 5544, 2411, 2410, 2143, ...]
+```
+
+```{r lda, cache = TRUE}
+# MCMC and model tuning parameters:
+K <- 20
+G <- 5000
+alpha <- 0.02
+eta <- 0.02
+
+# Fit the model:
+library(lda)
+set.seed(2016-03-22)
+t1 <- Sys.time()
+fit <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
+                                   num.iterations = G, alpha = alpha, 
+                                   eta = eta, initial = NULL, burnin = 1000,
+                                   compute.log.likelihood = TRUE)
+t2 <- Sys.time()
+t2 - t1  # about 12 minutes on laptop
+```
+
+```{r wordcloud}
+library(wordcloud)
+for (i in 1:K){
+  cloud.data<-sort(fit$topics[i,], decreasing=TRUE)[1:50]
+  wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
+}
 ```
 
 
 
 
-```{r chunkb}
-# chunk b
-2+2
-```
-
-blah
-
-```{r chunkc}
-# chunk c
-rnorm(10)
-```
 
 
 
+# Background
 
-# What types of data analysis problems have others addressed with topic modeling?
+Researchers have applied topic modeling to data analysis questions in a wide range of scholarly disciplines.
+
+
+
+### What types of data analysis problems have others addressed with topic modeling?
 
 - can we find several (3 or 4) motivating examples?
 1. genetics & ancestral populations -- STRUCTURE paper 2000
 2. political science 2010 paper... on what??
 3. what did John Dawson do?
 
-# What types of data? 
+### What types of data? 
 
 1. streaming... what makes this - topic modeling with streaming data - interesting
 2. hierarchical... how?
