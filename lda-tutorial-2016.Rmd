@@ -32,14 +32,36 @@ We are in the big data era. Social media inundates us with status updates and tw
 
 Think about how we currently browse media. Let's suppose that we want to read about mass shootings. We might search for the key words "mass" and "shooting". Doing so, we will find some articles that deal with mass shootings, but other results may deal with other types of "shootings", such as film shooting or television shooting. Even if we specify that the two-word phrase "mass shooting" must appear in our results, we still may find some articles that merely mention mass shootings without focusing on one or more mass shootings. 
 
-@blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. 
+@blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. That is, we'd like to see all of the articles that have the theme, or "topic", mass shooting. Topic modeling is one method that may ultimately enable us to do the theme-based browsing that @blei2012probabilistic suggests. 
+
+"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(echo=FALSE) # hide source code in the document
+```
+
+```{r chunka}
+# chunk a
+1+1
+```
 
 
-# Overview
 
-The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of probabilistic topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We also provide an appendix with computer code (in the R programming language) that implements these methods.
 
-\todo[color = violet]{the above paragraphs are disjointed}
+```{r chunkb}
+# chunk b
+2+2
+```
+
+blah
+
+```{r chunkc}
+# chunk c
+rnorm(10)
+```
+
+
 
 
 # What types of data analysis problems have others addressed with topic modeling?
@@ -51,7 +73,7 @@ The tremendous rise in computing speed and memory capacity, coupled with the inc
 
 # What types of data? 
 
-1. streaming... what makes this interesting
+1. streaming... what makes this - topic modeling with streaming data - interesting
 2. hierarchical... how?
 3. Victorian Eyes
 
@@ -215,6 +237,11 @@ David Mimno, a Cornell University scholar, curates an annotated bibliography of 
 We present below instructions and code for using LDA in the R statistical computing language [@r2015].
 **Ask Dhavan about including code?** **Maybe as an appendix?**
 
+Now we show all the code chunks:
+
+```{r all-code, ref.label=all_labels(), echo=TRUE, eval=FALSE}
+
+```
 
 
 
