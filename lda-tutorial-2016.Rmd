@@ -34,12 +34,18 @@ Think about how we currently browse media. Let's suppose that we want to read ab
 
 @blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. That is, we'd like to see all of the articles that have the theme, or "topic", mass shooting. Topic modeling is one method that may ultimately enable us to do the theme-based browsing that @blei2012probabilistic suggests. 
 
-"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a large collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. Among the most foundational contributions is the development of topic models. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a large collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing avaialability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
 
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(echo=FALSE) # hide source code in the document
 ```
+
+```{r install-libs, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("fboehm/wordtools")
+```
+
 
 ```{r read-nyt}
 tx1 <- scan(file = "~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-02.TXT", what = "character", blank.lines.skip = TRUE, sep = "\n", encoding = "UTF-8", skipNul = TRUE) 
@@ -58,7 +64,7 @@ tx_list2<- sapply(FUN = function(x)x[-(1:which(str_detect(string = x, pattern = 
 ```
 
 
-```{r chekc}
+```{r check}
 myfun <- function(x, pattern = "Web Blog"){
   collapsed <- paste(x, collapse = " ")
   !stringr::str_detect(collapsed, pattern = pattern)
@@ -67,7 +73,6 @@ myfun <- function(x, pattern = "Web Blog"){
 
 indswb <- sapply(FUN = myfun, X = tx_list2)
 indsurl <- sapply(FUN = myfun, pattern = "URL", X = tx_list2)
-cbind(indswb, indsurl)
 ```
 
 ```{r}
@@ -81,14 +86,21 @@ library(tm)
 stopwords <- tm::stopwords("SMART")
 good2 <- sapply(FUN = function(x)paste(x, collapse = " "), X = good_art)  %>%
   stringr::str_split( pattern = " ") %>%
-  sapply(FUN = function(x) gsub("'", "", x)) %>% # remove apostrophes
-  sapply(FUN = function(x) gsub("[[:punct:]]", " ", x)) %>%  # replace punctuation with space
-  sapply(FUN = function(x) gsub("[[:cntrl:]]", " ", x)) %>% # replace control characters with space
-  sapply(FUN = function(x) gsub("^[[:space:]]+", "", x)) %>% # remove whitespace at beginning of documents
-  sapply(FUN = function(x) gsub("[[:space:]]+$", "", x)) %>% # remove whitesp
+  sapply(FUN = function(x) gsub("'", "", x)) %>% 
+  # remove apostrophes
+  sapply(FUN = function(x) gsub("[[:punct:]]", " ", x)) %>%  
+  # replace punctuation with space
+  sapply(FUN = function(x) gsub("[[:cntrl:]]", " ", x)) %>% 
+  # replace control characters with space
+  sapply(FUN = function(x) gsub("^[[:space:]]+", "", x)) %>% 
+  # remove whitespace at beginning of documents
+  sapply(FUN = function(x) gsub("[[:space:]]+$", "", x)) %>% 
+  # remove whitesp
   sapply(FUN = function(x)tolower(x)) %>%
-  sapply(FUN = function(x)x[!(x == "")]) %>% # remove elements that are ""
-  sapply(FUN = function(x)x[!(x %in% stopwords)]) # remove stopwords
+  sapply(FUN = function(x)x[!(x == "")]) %>% 
+  # remove elements that are ""
+  sapply(FUN = function(x)x[!(x %in% stopwords)]) 
+# remove stopwords
 ```
 
 ```{r}
@@ -109,12 +121,13 @@ documents <- lapply(good2, get_terms)
 
 ```{r, summary_stats}
 # Compute some statistics related to the data set:
-D <- length(documents)  # number of documents (2,000)
-W <- length(vocab)  # number of terms in the vocab (14,568)
-doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document [312, 288, 170, 436, 291, ...]
-N <- sum(doc.length)  # total number of tokens in the data (546,827)
-term.frequency <- as.integer(term_table)  # frequencies of terms in the corpus [8939, 5544, 2411, 2410, 2143, ...]
+D <- length(documents)  # number of documents 
+W <- length(vocab)  # number of terms in the vocab
+doc.length <- sapply(documents, function(x) sum(x[2, ]))  # number of tokens per document 
+N <- sum(doc.length)  # total number of tokens in the data 
+term.frequency <- as.integer(term_table)  # frequencies of terms in the corpus
 ```
+
 
 ```{r lda, cache = TRUE}
 # MCMC and model tuning parameters:
@@ -126,24 +139,52 @@ eta <- 0.02
 # Fit the model:
 library(lda)
 set.seed(2016-03-22)
-t1 <- Sys.time()
-fit <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
+fit1 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
                                    num.iterations = G, alpha = alpha, 
                                    eta = eta, initial = NULL, burnin = 1000,
                                    compute.log.likelihood = TRUE)
-t2 <- Sys.time()
-t2 - t1  # about 12 minutes on laptop
+set.seed(2016-03-21)
+fit2 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
+                                   num.iterations = G, alpha = alpha, 
+                                   eta = eta, initial = NULL, burnin = 1000,
+                                   compute.log.likelihood = TRUE)
+set.seed(2016-03-23)
+fit3 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
+                                   num.iterations = G, alpha = alpha, 
+                                   eta = eta, initial = NULL, burnin = 1000,
+                                   compute.log.likelihood = TRUE)
+
 ```
 
-```{r wordcloud}
+# Wordclouds for fit 1
+
+```{r wordcloud1, fig.show= 'hide'}
 library(wordcloud)
 for (i in 1:K){
-  cloud.data<-sort(fit$topics[i,], decreasing=TRUE)[1:50]
+  cloud.data<-sort(fit1$topics[i,], decreasing=TRUE)[1:50]
   wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
 }
 ```
 
 
+# Wordclouds for fit 2
+
+```{r wordcloud2, fig.show= 'hide'}
+for (i in 1:K){
+  cloud.data<-sort(fit2$topics[i,], decreasing=TRUE)[1:50]
+  wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
+}
+```
+
+# Wordclouds for fit 3
+
+```{r wordcloud3, fig.show= 'hide'}
+library(wordcloud)
+for (i in 1:K){
+  cloud.data<-sort(fit1$topics[i,], decreasing=TRUE)[1:50]
+  wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
+}
+```
 
 
 
@@ -214,15 +255,13 @@ The vertical bars in the last expressions denote conditional probabilities. Note
 
 # Example of LDA with print media
 
-An example may help to illustrate our point. 
+An example may help to illustrate our approach. Let's suppose that we want to understand the themes, or topics, that appear in a collection of print media articles. One strategy is to read every article in the collection. We could then assign one or more themes to each article and, at the end of our analysis, we would have a collection of themes. An alternative approach is to use topic modeling to identify topics, which we treat as themes, in the collection of articles. 
 
-- which example to use here? NY Times
+To demonstrate our topic modeling approach to discovering themes, or topics, in print media, we used the Lexis Nexis Academic database to acquire 746 New York Times (print) articles from March 19, 20, and 21 of 2016. 
 
-We analyzed 
+We read the raw downloaded text files into R, then partitioned the files into the 746 articles. To each article, we applied a series of text processing steps. We split each article into its distinct words and removed white space and punctuation before converting all text to lower-case. At this stage, we had a collection of words for each of the 746 distinct articles. After removing words that occurred fewer than three times in the collection of articles and those that appeared on our "stop list" of frequently occurring short words, including articles and prepositions, we created the vocabulary and the document-term matrix. We then used existing R code (from the "lda" R package) to perform collapsed Gibbs sampling to sample from the posterior distribution of the parameters. Note that this computational implementation requires us to specify the number of topics in the collection. We arbitrarily chose 20 topics for our initial topic models. 
 
 
-@blei2007correlated fitted a 100-topic model to 17,000 research articles from the journal Science. They found that a 1996 article "Seeking Life's Bare (Genetic) Necessities" [@pennisi1996seeking] exhibited topics related to "evolution", "genetics", "disease", and "computers".
-**Would it be more sensible to use RT's Super Bowl results here?**
 
 
 
@@ -265,49 +304,41 @@ The user must impose meaning on the topics. For instance, a topic may put heavy 
 
 # Visualizing topics
 
-- LDAvis
-- wordcloud
-
-  Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. 
-
-  Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
-  For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
+  Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
+  Word cloud construction is straightforward and implemented with freely available software, such as the R package "wordcloud". For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
   One newly developed method, which is implemented in the LDAvis R package, uses a singular value decomposition of the fitted document-topic matrix to calculate principal components. Each topic is then plotted in two dimensions, where the axes represent the first two principal components. The LDAvis R package enhances this second approach by making the figures interactive with D3 javascript.
+  For our analysis of 746 New York Times articles, in which our initial topic models featured `r K` topics, we created wordclouds for each topic in the resulting models. 
   
   
-  
 
 
 
-# Results from NY Times "Obama" Analysis
-
-\begin{figure}
-\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-3.pdf}
-\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc3}}
-\end{figure}
-
-We examine several wordclouds of topics derived from our analysis of 267 New York Times articles that contain the word "Obama". We notice in Figure \ref{fig:wc3} words that relate to civil rights. Words that emphasize race or sexual orientation feature prominently. It's possible that if we were to fit a model with more topics, say 50, that race and sexual orientation might occupy distinct topics.
+# Results from NY Times Articles Analysis
 
 \begin{figure}
-\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-4.pdf}
-\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc4}}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-1.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 746 New York Times articles. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc1}}
 \end{figure}
-
-Figure \ref{fig:wc4} contains words that deal with Barack Obama's biography. 
 
 \begin{figure}
-\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-5.pdf}
-\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc5}}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-2.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 746 New York Times articles. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc2}}
 \end{figure}
-
-Whatismore, Figure \ref{fig:wc5} highlights the use of political terms in articles that contain the word "Obama". 
 
 \begin{figure}
-\includegraphics[width=\textwidth]{2016-03-17-obama_files/figure-latex/wordcloud-8.pdf}
-\caption{Wordcloud for one topic from a 20-topic model. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc8}}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-3.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 746 New York Times articles. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc3}}
 \end{figure}
 
-International relations words make up the topic visualized in Figure \ref{fig:wc8}.
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-4.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 746 New York Times articles. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc4}}
+\end{figure}
+
+
+
 
 
 # Discussion
@@ -320,6 +351,9 @@ International relations words make up the topic visualized in Figure \ref{fig:wc
 
 # Online resources
 
+We've posted our code and article text on github.com. To access these materials, please visit this url: http://github.com/fboehm/aejmc-manuscript-2016
+
+
 David Mimno, a Cornell University scholar, curates an annotated bibliography of topic modeling research[@mimno2016topic]. His bibliography is available at this url: http://mimno.infosci.cornell.edu/topics.html
 
 
@@ -330,7 +364,7 @@ We present below instructions and code for using LDA in the R statistical comput
 
 Now we show all the code chunks:
 
-```{r all-code, ref.label=all_labels(), echo=TRUE, eval=FALSE}
+```{r all-code, ref.label=all_labels(), echo=TRUE, eval=FALSE, tidy = TRUE}
 
 ```
 
