@@ -1,0 +1,19 @@
+---
+title: 'LDA article: Background'
+author: "Fred Boehm"
+date: "March 24, 2016"
+output: html_document
+bibliography: twitter.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Background
+
+LDA is an extension of an earlier text analysis method called "probabilistic latent semantic analysis" (pLSA) [@hofmann1999probabilistic]. @hofmann1999probabilistic described pLSA as a "latent class model for factor analysis of count data". The novelty of LDA, compared to pLSA, is that LDA places a Dirichlet process prior on the probability distributions of words. This use of a Dirichlet process prior makes computations convenient because of a Bayesian statistical concept called "conjugacy". That is, the posterior distribution, which is the object of statistical inference, is also a Dirichlet process. 
+
+In the 13 years since the publication of @blei2003latent, researchers have developed a wide variety of extensions to LDA. Many of these extensions of LDA accommodate relationships among topics. Widely used extensions of LDA include correlated topic models [@blei2007correlated], hierarchical topic models [@griffiths2004hierarchical], author-topic models [@rosen2004author], and dynamic topic models [@blei2006dynamic]. Looking towards the future, researchers will need to fine tune and extend existing methods to accommodate new text data structures. One current research frontier is in topic modeling of tweets on Twitter. Twitter data present challenges because they are streaming and each message is no more than 140 characters. 
+
+

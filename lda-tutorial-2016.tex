@@ -9,11 +9,10 @@
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
-    \usepackage{xltxtra,xunicode}
   \else
     \usepackage{fontspec}
   \fi
-  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
   \newcommand{\euro}{€}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
@@ -24,22 +23,12 @@
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage[margin=1in]{geometry}
-\ifxetex
-  \usepackage[setpagesize=false, % page size defined by xetex
-              unicode=false, % unicode breaks when used with xetex
-              xetex]{hyperref}
-\else
-  \usepackage[unicode=true]{hyperref}
-\fi
-\hypersetup{breaklinks=true,
-            bookmarks=true,
-            pdfauthor={},
+\usepackage{hyperref}
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\hypersetup{unicode=true,
             pdftitle={Data Analysis with Topic Models for Communications Researchers},
-            colorlinks=true,
-            citecolor=blue,
-            urlcolor=blue,
-            linkcolor=magenta,
-            pdfborder={0 0 0}}
+            pdfborder={0 0 0},
+            breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -120,6 +109,7 @@
   \date{}
   \predate{}\postdate{}
 
+
 \usepackage{setspace}
 \doublespacing
 \usepackage[nomarkers,figuresonly]{endfloat}
@@ -132,7 +122,7 @@
 \pagestyle{fancy}
 \lhead{}
 \chead{}
-\rhead{XXXXX}
+\rhead{}
 
 % Redefines (sub)paragraphs to behave more like sections
 \ifx\paragraph\undefined\else
@@ -161,7 +151,6 @@ methods with data from Twitter. We complement our discussion with
 computer code (in the R computing language) that implements these
 methods. We close with thoughts about the future value of topic modeling
 to communications researchers.
-\todo[inline]{Do I want to emphasize data analysis more? I think so}
 
 \section{Motivation}\label{motivation}
 
@@ -196,7 +185,7 @@ do the theme-based browsing that Blei (2012) suggests.
 learning methods that have the goal of discovering latent topics in a
 large collection, or ``corpus'', of texts. The tremendous rise in
 computing speed and memory capacity, coupled with the increasing
-avaialability of digitized texts, has enabled researchers working at the
+availability of digitized texts, has enabled researchers working at the
 interface of quantitative methods and social sciences to treat written
 texts as data. While data analysis of documents is still in its infancy,
 scientists nevertheless have made great progress towards computational
@@ -207,59 +196,41 @@ methods in the analysis of all New York Times articles from three days
 in March 2016. We also provide an appendix with computer code (in the R
 programming language) that implements these methods.
 
-\begin{verbatim}
-## Loading required package: NLP
-\end{verbatim}
-
-\section{Wordclouds for fit 1}\label{wordclouds-for-fit-1}
-
-\begin{verbatim}
-## Loading required package: RColorBrewer
-\end{verbatim}
-
-\section{Wordclouds for fit 2}\label{wordclouds-for-fit-2}
-
-\section{Wordclouds for fit 3}\label{wordclouds-for-fit-3}
-
 \section{Background}\label{background}
 
-Researchers have applied topic modeling to data analysis questions in a
-wide range of scholarly disciplines.
+LDA is an extension of an earlier text analysis method called
+``probabilistic latent semantic analysis'' (pLSA) (Hofmann, 1999).
+Hofmann (1999) described pLSA as a ``latent class model for factor
+analysis of count data''. The novelty of LDA, compared to pLSA, is that
+LDA places a Dirichlet process prior on the probability distributions of
+words. This use of a Dirichlet process prior makes computations
+convenient because of a Bayesian statistical concept called
+``conjugacy''. That is, the posterior distribution, which is the object
+of statistical inference, is also a Dirichlet process.
 
-\subsubsection{What types of data analysis problems have others
-addressed with topic
-modeling?}\label{what-types-of-data-analysis-problems-have-others-addressed-with-topic-modeling}
+In the 13 years since the publication of Blei, Ng, \& Jordan (2003),
+researchers have developed a wide variety of extensions to LDA. Many of
+these extensions of LDA accommodate relationships among topics. Widely
+used extensions of LDA include correlated topic models (Blei \&
+Lafferty, 2007), hierarchical topic models (D. Griffiths \& Tenenbaum,
+2004), author-topic models (Rosen-Zvi, Griffiths, Steyvers, \& Smyth,
+2004), and dynamic topic models (Blei \& Lafferty, 2006). Looking
+towards the future, researchers will need to fine tune and extend
+existing methods to accommodate new text data structures. One current
+research frontier is in topic modeling of tweets on Twitter. Twitter
+data present challenges because they are streaming and each message is
+no more than 140 characters.
 
-\begin{itemize}
-\tightlist
-\item
-  can we find several (3 or 4) motivating examples?
-\end{itemize}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  genetics \& ancestral populations -- STRUCTURE paper 2000
-\item
-  political science 2010 paper\ldots{} on what??
-\item
-  what did John Dawson do?
-\end{enumerate}
-
-\subsubsection{What types of data?}\label{what-types-of-data}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  streaming\ldots{} what makes this - topic modeling with streaming data
-  - interesting
-\item
-  hierarchical\ldots{} how?
-\item
-  Victorian Eyes
-\end{enumerate}
+Topic models have found applications in a wide range of disciplines.
+Pritchard, Stephens, \& Donnelly (2000) used a statistical model much
+like LDA with genetic marker data to infer population structure and
+relatedness in human subjects. DeRose, Roy, \& Boehm (2014) and Roy,
+DeRose, \& Boehm (2013) used LDA (and other methods) in efforts to
+characterize themes from a collection of Victorian novels. Other
+examples include a 2008 study by Hall, Jurafsky, \& Manning (2008), in
+which they applied LDA to examine the history of ideas. Grimmer (2010)
+applied a hierarchical topic model to study agendas in Senate press
+releases.
 
 \section{Box's Loop \& Data analysis}\label{boxs-loop-data-analysis}
 
@@ -294,12 +265,12 @@ consistent with the research goals.
 
 \section{Latent Dirichlet Allocation}\label{latent-dirichlet-allocation}
 
-Blei, Ng, \& Jordan (2003) introduced a (generative) statistical model
-called ``latent dirichlet allocation'' (LDA) in 2003. Although others
-had described similar statistical models (Pritchard, Stephens, \&
-Donnelly, 2000), Blei et al. (2003) first applied the statistical model
-to text analysis. Researchers in a wide range of disciplines - including
-genetics, linguistics, psychology, political science, and others - have
+Blei et al. (2003) introduced a (generative) statistical model called
+``latent dirichlet allocation'' (LDA) in 2003. Although others had
+described similar statistical models (Pritchard et al., 2000), Blei et
+al. (2003) first applied the statistical model to text analysis.
+Researchers in a wide range of disciplines - including genetics,
+linguistics, psychology, political science, and others - have
 enthusiastically adopted LDA and related methods.
 
 \subsection{What is the intuition behind the
@@ -308,47 +279,76 @@ model?}\label{what-is-the-intuition-behind-the-model}
 As Blei (2012) writes, the key to understanding LDA is to recognize that
 a given document - be it a research article, a novel, or a blog post -
 exhibits multiple topics. Each topic, in turn, is, in a technical sense,
-a distribution over words. For example, a topic related to evolution may
-heavily weight the words ``evolution'', ``evolutionary'', ``biology'',
-``phylogenetic'', and ``species''. In a given collection of documents,
-which we term a ``corpus'' of documents, we assume that relatively few
-topics - on the order of 10 to 50 for most analyses - are present.
+a probability distribution over words. For example, a topic related to
+evolution may heavily weight the words ``evolution'', ``evolutionary'',
+``biology'', ``phylogenetic'', and ``species''. In a given collection of
+documents, which we term a ``corpus'' of documents, we assume that
+relatively few topics - on the order of 10 to 50 for most analyses - are
+present.
 
 \subsection{\texorpdfstring{In what sense is the model
 `generative'?}{In what sense is the model generative?}}\label{in-what-sense-is-the-model-generative}
 
 We say that LDA is a generative model because we specify a joint
 probability distribution that allows generation of observed samples. In
-a more precise manner, we specify a distribution over topics (again,
-where topics are themselves distributions over words) that is shared by
-the corpus. Each document can be viewed as a draw from this
-distribution. The observed topic (distribution over words) tells us how
-the words are distributed.
+a more precise manner, we specify a probability distribution over topics
+(again, where topics are themselves probability distributions over
+words) that is shared by the corpus. Each document can be viewed as a
+draw from this probability distribution. The observed topic (probability
+distribution over words) tells us how the words are distributed.
+
+\subsection{What is the model?}\label{what-is-the-model}
+
+LDA models have a hiearchical structure in which words make up
+documents, and a collection of documents is a corpus. The corpus is
+assumed to have (unobserved) topics, or themes. The purposes of LDA,
+then, are to discover the unobserved topics from the texts and to
+characterize documents by the topics that they contain.
+
+We distinguish generative models from discriminative models. A
+generative model, such as LDA, is one in which we specify a joint
+probability distribution for all variables (including those that are
+unobserved) and, thus, enable the creation of observations. On the other
+hand, a discriminative model relies on a conditional probability
+distribution and doesn't permit generation of samples from the joint
+probability distribution.
+
+\subsection{What are its assumptions?}\label{what-are-its-assumptions}
+
+\subsection{What are its limitations?}\label{what-are-its-limitations}
+
+The original LDA model However, LDA's flexibility and adaptability have
+reduced the impact of its initial limitations. In the last decade,
+researchers have devised extensions of LDA, such as ``dynamic LDA'',
+that enable one to model topic evolution over time. Another extension of
+LDA, which is known as ``correlated LDA'', accounts for correlations
+among topics.
 
 \section{LDA with statistical
 terminology}\label{lda-with-statistical-terminology}
 
 We can also describe LDA with more formal statistical terminology. We
 let \(\beta_1, \beta_2, ..., \beta_K\) be the \(K\) topics, where each
-\(\beta_k\) is a distribution over the vocabulary. Topic weights (or
-proportions) we denote by \(\theta_d\) for the \(d^{th}\) document. We
-let \(\theta_{d,k}\) be the topic proportion for topic \(k\) in document
-\(d\). Topic assignments for the \(d^{th}\) document are \(z_d\), where
-\(z_{d,n}\) is the topic assignment for the \(n^{th}\) word in the
-\(d^{th}\) document. Observed words for the \(d^{th}\) document are
-\(w_d\), where \(w_{d, n}\) is the \(n^{th}\) word for the \(d^{th}\)
-document.
+\(\beta_k\) is a probability distribution over the vocabulary. Topic
+weights (or proportions) we denote by \(\theta_d\) for the \(d^{th}\)
+document. We let \(\theta_{d,k}\) be the topic proportion for topic
+\(k\) in document \(d\). Topic assignments for the \(d^{th}\) document
+are \(z_d\), where \(z_{d,n}\) is the topic assignment for the
+\(n^{th}\) word in the \(d^{th}\) document. Observed words for the
+\(d^{th}\) document are \(w_d\), where \(w_{d, n}\) is the \(n^{th}\)
+word for the \(d^{th}\) document.
 
-We then use the above notation to specify the joint distribution for all
-variables in the model:
+We then use the above notation to specify the joint probability
+distribution for all variables in the model:
 
 \[p(\beta_{1:K}, \theta_{1:D}, z_{1:D}, w_{1:D}) = \prod_{i = 1}^Kp(\beta_i)\prod_{d = 1}^Dp(\theta_d)\left( \prod_{n = 1}^N p(z_{d,n}|\theta_d)p(w_{d,n}|\beta_{1:K}, z_{d,n})\right)\]
 
 The vertical bars in the last expressions denote conditional
 probabilities. Note that the topic assignments \(z_{d,n}\) depend on the
 document's topic proportions. Whatismore, the observed word \(w_{d,n}\)
-has a distribution that depends on both the entire collection of topics,
-\(\beta_{1:K}\), and the topic, \(z_{d,n}\), assigned to that word.
+has a probability distribution that depends on both the entire
+collection of topics, \(\beta_{1:K}\), and the topic, \(z_{d,n}\),
+assigned to that word.
 
 \section{Example of LDA with print
 media}\label{example-of-lda-with-print-media}
@@ -377,47 +377,21 @@ three times in the collection of articles and those that appeared on our
 and prepositions, we created the vocabulary and the document-term
 matrix. We then used existing R code (from the ``lda'' R package) to
 perform collapsed Gibbs sampling to sample from the posterior
-distribution of the parameters. Note that this computational
+probability distribution of the parameters. Note that this computational
 implementation requires us to specify the number of topics in the
 collection. We arbitrarily chose 20 topics for our initial topic models.
-
-\subsection{What is the model?}\label{what-is-the-model}
-
-LDA models have a hiearchical structure in which words make up
-documents, and a collection of documents is a corpus. The corpus is
-assumed to have (unobserved) topics, or themes. The purposes of LDA,
-then, are to discover the unobserved topics from the texts and to
-characterize documents by the topics that they contain.
-
-We distinguish generative models from discriminative models. A
-generative model, such as LDA, is one in which we specify a joint
-probability distribution for all variables (including those that are
-unobserved) and, thus, enable the creation of observations. On the other
-hand, a discriminative model relies on a conditional distribution and
-doesn't permit generation of samples from the joint distribution.
-
-\subsection{What are its assumptions?}\label{what-are-its-assumptions}
-
-\subsection{What are its limitations?}\label{what-are-its-limitations}
-
-The original LDA model However, LDA's flexibility and adaptability have
-reduced the impact of its initial limitations. In the last decade,
-researchers have devised extensions of LDA, such as ``dynamic LDA'',
-that enable one to model topic evolution over time. Another extension of
-LDA, which is known as ``correlated LDA'', accounts for correlations
-among topics.
 
 \section{Inference in topic models}\label{inference-in-topic-models}
 
 Existing strategies for fitting topic models can be divided into two
 classes: 1. variational Bayes methods and 2. sampling methods.
-Variational Bayes methods try to approximate the posterior distribution
-by maximizing a lower bound. In this sense, variational Bayes methods
-approach topic model fitting from a computer science optimization
-perspective. Alternatively, sampling methods, such as those based on
-Markov chain monte carlo (MCMC) approaches, draw samples from (an
-approximation to) the posterior distribution and estimate distributional
-parameters by their empirical sample statistics.
+Variational Bayes methods try to approximate the posterior probability
+distribution by maximizing a lower bound. In this sense, variational
+Bayes methods approach topic model fitting from a computer science
+optimization perspective. Alternatively, sampling methods, such as those
+based on Markov chain monte carlo (MCMC) approaches, draw samples from
+(an approximation to) the posterior probability distribution and
+estimate distributional parameters by their empirical sample statistics.
 
 Computational implementations of both classes of strategies are freely
 available for the R statistical computing language. We include code to
@@ -427,8 +401,8 @@ use these free implementations in the appendix.
 modeling}\label{interpreting-results-of-topic-modeling}
 
 Statistical inference for topic models yields estimates for topics
-(i.e., distributions over words), assignments of words (within
-documents) to topics, and weights of topics in each document.
+(i.e., probability distributions over words), assignments of words
+(within documents) to topics, and weights of topics in each document.
 
 The user must impose meaning on the topics. For instance, a topic may
 put heavy weights on the words ``genetics'', ``gene'', ``regulation'',
@@ -486,9 +460,15 @@ Analysis}\label{results-from-ny-times-articles-analysis}
 
 \section{Discussion}\label{discussion}
 
+We see that the
+
 \section{Future directions}\label{future-directions}
 
 \section{Online resources}\label{online-resources}
+
+We've posted our code, results, and manuscript on github.com. To access
+these materials, please visit this url:
+\url{http://github.com/fboehm/aejmc-manuscript-2016}
 
 David Mimno, a Cornell University scholar, curates an annotated
 bibliography of topic modeling research(Mimno, 2016). His bibliography
@@ -507,7 +487,7 @@ Now we show all the code chunks:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(knitr)}
-\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{)  }\CommentTok{# hide source code in the document}
+\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{)  }\CommentTok{# hide source code in the document}
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
 \NormalTok{devtools::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"fboehm/wordtools"}\NormalTok{)}
 \NormalTok{tx1 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-02.TXT"}\NormalTok{, }
@@ -535,7 +515,7 @@ Now we show all the code chunks:
     \NormalTok{x[-(}\KeywordTok{which}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(x, }\StringTok{"URL"}\NormalTok{)):}\KeywordTok{length}\NormalTok{(x))]}
 \NormalTok{\})}
 \KeywordTok{library}\NormalTok{(tm)}
-\NormalTok{stopwords <-}\StringTok{ }\NormalTok{tm::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"SMART"}\NormalTok{)}
+\NormalTok{stopwords <-}\StringTok{ }\KeywordTok{c}\NormalTok{(tm::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"SMART"}\NormalTok{), }\StringTok{"dr"}\NormalTok{, }\StringTok{"mr"}\NormalTok{, }\StringTok{"ms"}\NormalTok{, }\StringTok{"mrs"}\NormalTok{)  }\CommentTok{# add titles to stoplist}
 \NormalTok{good2 <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{paste}\NormalTok{(x, }\DataTypeTok{collapse =} \StringTok{" "}\NormalTok{), }\DataTypeTok{X =} \NormalTok{good_art) %>%}\StringTok{ }
 \StringTok{    }\NormalTok{stringr::}\KeywordTok{str_split}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{" "}\NormalTok{) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"'"}\NormalTok{, }
     \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# remove apostrophes}
@@ -619,10 +599,46 @@ Blei, D. M. (2014). Build, compute, critique, repeat: Data analysis with
 latent variable models. \emph{Annual Review of Statistics and Its
 Application}, \emph{1}, 203--232.
 
+\hypertarget{ref-blei2006dynamic}{}
+Blei, D. M., \& Lafferty, J. D. (2006). Dynamic topic models. In
+\emph{Proceedings of the 23rd international conference on machine
+learning} (pp. 113--120). ACM.
+
+\hypertarget{ref-blei2007correlated}{}
+Blei, D. M., \& Lafferty, J. D. (2007). A correlated topic model of
+science. \emph{The Annals of Applied Statistics}, 17--35.
+
 \hypertarget{ref-blei2003latent}{}
 Blei, D. M., Ng, A. Y., \& Jordan, M. I. (2003). Latent dirichlet
 allocation. \emph{The Journal of Machine Learning Research}, \emph{3},
 993--1022.
+
+\hypertarget{ref-derose2014victorian}{}
+DeRose, C., Roy, C., \& Boehm, F. (2014). Victorian eyes: Literary,
+statistical, and artistic perspectives on victorian novels -- and
+dickens's unfinished murder mystery. \emph{Significance}, \emph{11}(2),
+40--43.
+
+\hypertarget{ref-griffiths2004hierarchical}{}
+Griffiths, D., \& Tenenbaum, M. (2004). Hierarchical topic models and
+the nested chinese restaurant process. \emph{Advances in Neural
+Information Processing Systems}, \emph{16}, 17.
+
+\hypertarget{ref-grimmer2010bayesian}{}
+Grimmer, J. (2010). A bayesian hierarchical topic model for political
+texts: Measuring expressed agendas in senate press releases.
+\emph{Political Analysis}, \emph{18}(1), 1--35.
+
+\hypertarget{ref-hall2008studying}{}
+Hall, D., Jurafsky, D., \& Manning, C. D. (2008). Studying the history
+of ideas using topic models. In \emph{Proceedings of the conference on
+empirical methods in natural language processing} (pp. 363--371).
+Association for Computational Linguistics.
+
+\hypertarget{ref-hofmann1999probabilistic}{}
+Hofmann, T. (1999). Probabilistic latent semantic indexing. In
+\emph{Proceedings of the 22nd annual international aCM sIGIR conference
+on research and development in information retrieval} (pp. 50--57). ACM.
 
 \hypertarget{ref-mimno2016topic}{}
 Mimno, D. (2016). Topic modeling bibliography. Retrieved from
@@ -637,5 +653,15 @@ population structure using multilocus genotype data. \emph{Genetics},
 R Core Team. (2015). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
+
+\hypertarget{ref-rosen2004author}{}
+Rosen-Zvi, M., Griffiths, T., Steyvers, M., \& Smyth, P. (2004). The
+author-topic model for authors and documents. In \emph{Proceedings of
+the 20th conference on uncertainty in artificial intelligence} (pp.
+487--494). AUAI Press.
+
+\hypertarget{ref-roy2013victorian}{}
+Roy, C., DeRose, C., \& Boehm, F. (2013). Victorian eyes. Retrieved from
+\url{http://victorianeyes.com}
 
 \end{document}
