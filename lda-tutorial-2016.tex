@@ -234,34 +234,36 @@ releases.
 
 \section{Box's Loop \& Data analysis}\label{boxs-loop-data-analysis}
 
-\todo[inline, color=pink]{Need one or two figures here}
-
-\missingfigure{Box's loop from 1976? Blei 2014?}
+\begin{figure}
+\includegraphics{box-blei-loop.png}
+\caption{Iterative process for building, computing, critiquing, and applying topic models.\label{fig:box}}
+\end{figure}
 
 The perspective that guides our data analysis is based on ideas of the
 University of Wisconsin-Madison statistician George Box and coworkers.
-Blei (2014) extends the ideas of Box and colleagues to the specific case
-of iterative refinement of topic models. Box (CITATION) articulated a
-process of scientific inquiry and statistical collaboration in which
-scientists put forth a hypothesis about the natural world, and, with
-assistance from statisticians, design experiments to test the scientific
-hypothesis. After statistical analysis of the experimental data, the
-scientific hypothesis is refined, which leads to design and
-implementation of another experiment, and the iterative process between
-scientific hypothesis and experiment continues. Box also suggested
-(CITATION) that a statistician, working in collaboration with
-scientists, might use scientific questions as motivation to develop new
-statistical methods in experimental design and data analysis. In this
-sense, there is a second iterative loop by which a statistical
-researcher develops novel methods because of their immediate need to
-answer a scientific research question. Blei (2014) adapts these
-iterative processes to the case of latent variable models, such as LDA
-and related models. He argues that we view the use of a topic model for
-a specific data analysis task as an iterative procedure in which one
-proposes a simple topic model for the data analysis, fits the model,
-interprets the results, and then, if needed, refines the topic model
-with the goal of achieving data analysis results that are more
-consistent with the research goals.
+Blei (2014) uses the ideas of Box and colleagues in the specific case of
+iterative refinement of topic models. Box
+(CITATION)\todo[color=purple]{What works - from Box \& colleagues - are cited by Blei 2014??}
+articulated a process of scientific inquiry and statistical
+collaboration in which scientists put forth a hypothesis about the
+natural world, and, with assistance and guidance from statisticians,
+design experiments to test the scientific hypothesis. After statistical
+analysis of the experimental data, the scientific hypothesis is refined,
+which leads to design and implementation of another experiment, and the
+iterative process between scientific hypothesis and experiment
+continues. Box also suggested (CITATION) that a statistician, working in
+collaboration with scientists, might use scientific questions as
+motivation to develop new statistical methods in experimental design and
+data analysis. In this sense, there is a second iterative loop by which
+a statistical researcher develops novel methods because of their
+immediate need to answer a scientific research question. Blei (2014)
+adapts these iterative processes to the case of latent variable models,
+such as LDA and related models. He argues that we view the use of a
+topic model for a specific data analysis task as an iterative procedure
+in which one proposes a simple topic model for the data analysis, fits
+the model, interprets the results, and then, if needed, refines the
+topic model with the goal of achieving data analysis results that are
+more consistent with the research goals.
 
 \section{Latent Dirichlet Allocation}\label{latent-dirichlet-allocation}
 
@@ -478,9 +480,10 @@ is available at this url:
 \section{Computational implementation of LDA with
 R}\label{computational-implementation-of-lda-with-r}
 
-We present below instructions and code for using LDA in the R
-statistical computing language (R Core Team, 2015). \textbf{Ask Dhavan
-about including code?} \textbf{Maybe as an appendix?}
+We present below instructions and code for using LDA (with a collapsed
+Gibbs sampler) in the R statistical computing language (R Core Team,
+2015). \textbf{Ask Dhavan about including code?} \textbf{Maybe as an
+appendix?}
 
 Now we show all the code chunks:
 
