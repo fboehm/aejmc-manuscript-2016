@@ -147,8 +147,8 @@ We present a non-technical introduction to data analysis with topic
 models for communications researchers. We motivate the discussion with a
 research question from social media communications research. We then
 discuss statistical aspects of topic models as we illustrate these
-methods with data from Twitter. We complement our discussion with
-computer code (in the R computing language) that implements these
+methods with data from The New York Times. We complement our discussion
+with computer code (in the R computing language) that implements our
 methods. We close with thoughts about the future value of topic modeling
 to communications researchers.
 
@@ -242,28 +242,27 @@ releases.
 The perspective that guides our data analysis is based on ideas of the
 University of Wisconsin-Madison statistician George Box and coworkers.
 Blei (2014) uses the ideas of Box and colleagues in the specific case of
-iterative refinement of topic models. Box
-(CITATION)\todo[color=purple]{What works - from Box \& colleagues - are cited by Blei 2014??}
-articulated a process of scientific inquiry and statistical
-collaboration in which scientists put forth a hypothesis about the
-natural world, and, with assistance and guidance from statisticians,
-design experiments to test the scientific hypothesis. After statistical
-analysis of the experimental data, the scientific hypothesis is refined,
-which leads to design and implementation of another experiment, and the
-iterative process between scientific hypothesis and experiment
-continues. Box also suggested (CITATION) that a statistician, working in
-collaboration with scientists, might use scientific questions as
-motivation to develop new statistical methods in experimental design and
-data analysis. In this sense, there is a second iterative loop by which
-a statistical researcher develops novel methods because of their
-immediate need to answer a scientific research question. Blei (2014)
-adapts these iterative processes to the case of latent variable models,
-such as LDA and related models. He argues that we view the use of a
-topic model for a specific data analysis task as an iterative procedure
-in which one proposes a simple topic model for the data analysis, fits
-the model, interprets the results, and then, if needed, refines the
-topic model with the goal of achieving data analysis results that are
-more consistent with the research goals.
+iterative refinement of topic models. Box (1976) articulated a process
+of scientific inquiry and statistical collaboration in which scientists
+put forth a hypothesis about the natural world, and, with assistance and
+guidance from statisticians, design experiments to test the scientific
+hypothesis. After statistical analysis of the experimental data, the
+scientific hypothesis is refined, which leads to design and
+implementation of another experiment, and the iterative process between
+scientific hypothesis and experiment continues. Box also suggested
+(CITATION) that a statistician, working in collaboration with
+scientists, might use scientific questions as motivation to develop new
+statistical methods in experimental design and data analysis. In this
+sense, there is a second iterative loop by which a statistical
+researcher develops novel methods because of their immediate need to
+answer a scientific research question. Blei (2014) adapts these
+iterative processes to the case of latent variable models, such as LDA
+and related models. He argues that we view the use of a topic model for
+a specific data analysis task as an iterative procedure in which one
+proposes a simple topic model for the data analysis, fits the model,
+interprets the results, and then, if needed, refines the topic model
+with the goal of achieving data analysis results that are more
+consistent with the research goals.
 
 \section{Latent Dirichlet Allocation}\label{latent-dirichlet-allocation}
 
@@ -490,7 +489,7 @@ Now we show all the code chunks:
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(knitr)}
-\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{)  }\CommentTok{# hide source code in the document}
+\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cache =} \OtherTok{TRUE}\NormalTok{)  }\CommentTok{# hide source code in the document}
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
 \NormalTok{devtools::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"fboehm/wordtools"}\NormalTok{)}
 \NormalTok{tx1 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-02.TXT"}\NormalTok{, }
@@ -615,6 +614,10 @@ science. \emph{The Annals of Applied Statistics}, 17--35.
 Blei, D. M., Ng, A. Y., \& Jordan, M. I. (2003). Latent dirichlet
 allocation. \emph{The Journal of Machine Learning Research}, \emph{3},
 993--1022.
+
+\hypertarget{ref-box1976science}{}
+Box, G. E. (1976). Science and statistics. \emph{Journal of the American
+Statistical Association}, \emph{71}(356), 791--799.
 
 \hypertarget{ref-derose2014victorian}{}
 DeRose, C., Roy, C., \& Boehm, F. (2014). Victorian eyes: Literary,

@@ -20,7 +20,7 @@ csl: apa.csl
 
 # Abstract
 
-We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from Twitter. We complement our discussion with computer code (in the R computing language) that implements these methods. We close with thoughts about the future value of topic modeling to communications researchers.
+We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from The New York Times. We complement our discussion with computer code (in the R computing language) that implements our methods. We close with thoughts about the future value of topic modeling to communications researchers.
 
 
 # Motivation
@@ -37,7 +37,7 @@ Think about how we currently browse media. Let's suppose that we want to read ab
 
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(echo=FALSE, message = FALSE) # hide source code in the document
+opts_chunk$set(echo=FALSE, message = FALSE, cache = TRUE) # hide source code in the document
 ```
 
 ```{r install-libs, eval = FALSE}
@@ -142,20 +142,7 @@ fit1 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab,
                                    num.iterations = G, alpha = alpha, 
                                    eta = eta, initial = NULL, burnin = 1000,
                                    compute.log.likelihood = TRUE)
-set.seed(2016-03-21)
-fit2 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
-                                   num.iterations = G, alpha = alpha, 
-                                   eta = eta, initial = NULL, burnin = 1000,
-                                   compute.log.likelihood = TRUE)
-set.seed(2016-03-23)
-fit3 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
-                                   num.iterations = G, alpha = alpha, 
-                                   eta = eta, initial = NULL, burnin = 1000,
-                                   compute.log.likelihood = TRUE)
-
 ```
-
-
 
 ```{r wordcloud1, fig.show= 'hide'}
 library(wordcloud)
@@ -166,23 +153,29 @@ for (i in 1:K){
 ```
 
 
+
+
+```{r}
+K <- 30
+set.seed(2016-03-22)
+fit2 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
+                                   num.iterations = G, alpha = alpha, 
+                                   eta = eta, initial = NULL, burnin = 1000,
+                                   compute.log.likelihood = TRUE)
+```
+
+
 ```{r wordcloud2, fig.show= 'hide'}
+library(wordcloud)
 for (i in 1:K){
   cloud.data<-sort(fit2$topics[i,], decreasing=TRUE)[1:50]
   wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
 }
 ```
 
+```{r read-tweets}
 
-
-```{r wordcloud3, fig.show= 'hide'}
-library(wordcloud)
-for (i in 1:K){
-  cloud.data<-sort(fit1$topics[i,], decreasing=TRUE)[1:50]
-  wordcloud(names(cloud.data), freq=cloud.data, scale=c(3,.10), min.freq=1, rot.per=0, random.order=FALSE, col = 1+ i %% 4)
-}
 ```
-
 
 
 

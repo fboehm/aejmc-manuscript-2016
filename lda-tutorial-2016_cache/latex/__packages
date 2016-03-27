@@ -6,3 +6,5 @@ magrittr
 NLP
 tm
 lda
+RColorBrewer
+wordcloud
