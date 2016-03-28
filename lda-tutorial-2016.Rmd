@@ -20,20 +20,20 @@ csl: apa.csl
 
 # Abstract
 
-We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from The New York Times. We complement our discussion with computer code (in the R computing language) that implements our methods. We close with thoughts about the future value of topic modeling to communications researchers.
+  We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from The New York Times. We complement our discussion with computer code (in the R computing language) that implements our methods. We close with thoughts about the future value of topic modeling to communications researchers.
 
 
 # Motivation
 
 \todo[color=pink]{Can we write a scenario like that of Blei's 2012 article?}
 
-We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
+  We are in the big data era. Social media inundates us with status updates and tweets, while bloggers share their views on current events. These new media interact with more established media, such as print news media, television, and radio. What do they have in common? One answer is that they all can be viewed as data sources in which words - whether written or spoken, tweeted or blogged - are the data. 
 
-Think about how we currently browse media. Let's suppose that we want to read about mass shootings. We might search for the key words "mass" and "shooting". Doing so, we will find some articles that deal with mass shootings, but other results may deal with other types of "shootings", such as film shooting or accidental shooting. Even if we specify that the two-word phrase "mass shooting" must appear in our results, we still may find some articles that merely mention mass shootings without focusing on one or more mass shootings. 
+  Think about how we currently browse media. Let's suppose that we want to read about mass shootings. We might search for the key words "mass" and "shooting". Doing so, we will find some articles that deal with mass shootings, but other results may deal with other types of "shootings", such as film shooting or accidental shooting. Even if we specify that the two-word phrase "mass shooting" must appear in our results, we still may find some articles that merely mention mass shootings without focusing on one or more mass shootings. 
 
-@blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. That is, we'd like to see all of the articles that have the theme, or "topic", mass shooting. Topic modeling is one method that may ultimately enable us to do the theme-based browsing that @blei2012probabilistic suggests. 
+  @blei2012probabilistic envisions an alternative search strategy in which we search for articles that are *about* "mass shootings". Some of the resulting articles would have the phrase "mass shooting", but containing that two-word phrase is not required; the sole requirement is that the article focus on one or more mass shootings. That is, we'd like to see all of the articles that have the theme, or "topic", mass shooting. Topic modeling is one method that may ultimately enable us to do the theme-based browsing that @blei2012probabilistic suggests. 
 
-"Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a large collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing availability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data. While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
+  "Topic modeling" refers to a collection of statistical and machine learning methods that have the goal of discovering latent topics in a large collection, or "corpus", of texts. The tremendous rise in computing speed and memory capacity, coupled with the increasing availability of digitized texts, has enabled researchers working at the interface of quantitative methods and social sciences to treat written texts as data.   While data analysis of documents is still in its infancy, scientists nevertheless have made great progress towards computational dissection and interpretation of texts. We detail below, with limited use of statistical terminology, how these methods work and why they may be useful in communications research. We illustrate topic modeling methods in the analysis of all New York Times articles from three days in March 2016. We also provide an appendix with computer code (in the R programming language) that implements these methods.
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -128,7 +128,7 @@ term.frequency <- as.integer(term_table)  # frequencies of terms in the corpus
 ```
 
 
-```{r lda, cache = TRUE}
+```{r lda-20, cache = TRUE}
 # MCMC and model tuning parameters:
 K <- 20
 G <- 5000
@@ -153,9 +153,7 @@ for (i in 1:K){
 ```
 
 
-
-
-```{r}
+```{r lda-30}
 K <- 30
 set.seed(2016-03-22)
 fit2 <- lda.collapsed.gibbs.sampler(documents = documents, K = K, vocab = vocab, 
@@ -178,26 +176,13 @@ for (i in 1:K){
 ```
 
 
-
-
 # Background
 
-LDA is an extension of an earlier text analysis method called "probabilistic latent semantic analysis" (pLSA) [@hofmann1999probabilistic]. @hofmann1999probabilistic described pLSA as a "latent class model for factor analysis of count data". The novelty of LDA, compared to pLSA, is that LDA places a Dirichlet process prior on the probability distributions of words. This use of a Dirichlet process prior makes computations convenient because of a Bayesian statistical concept called "conjugacy". That is, the posterior distribution, which is the object of statistical inference, is also a Dirichlet process. 
+  LDA is an extension of an earlier text analysis method called "probabilistic latent semantic analysis" (pLSA) [@hofmann1999probabilistic]. @hofmann1999probabilistic described pLSA as a "latent class model for factor analysis of count data". The novelty of LDA, compared to pLSA, is that LDA places a Dirichlet process prior on the probability distributions of words. This use of a Dirichlet process prior makes computations convenient because of a Bayesian statistical concept called "conjugacy". That is, the posterior distribution, which is the object of statistical inference, is also a Dirichlet process. 
 
-In the 13 years since the publication of @blei2003latent, researchers have developed a wide variety of extensions to LDA. Many of these extensions of LDA accommodate relationships among topics. Widely used extensions of LDA include correlated topic models [@blei2007correlated], hierarchical topic models [@griffiths2004hierarchical], author-topic models [@rosen2004author], and dynamic topic models [@blei2006dynamic]. Looking towards the future, researchers will need to fine tune and extend existing methods to accommodate new text data structures. One current research frontier is in topic modeling of tweets on Twitter. Twitter data present challenges because they are streaming and each message is no more than 140 characters. 
+  In the 13 years since the publication of @blei2003latent, researchers have developed a wide variety of extensions to LDA. Many of these extensions of LDA accommodate relationships among topics. Widely used extensions of LDA include correlated topic models [@blei2007correlated], hierarchical topic models [@griffiths2004hierarchical], author-topic models [@rosen2004author], and dynamic topic models [@blei2006dynamic]. Looking towards the future, researchers will need to fine tune and extend existing methods to accommodate new text data structures. One current research frontier is in topic modeling of tweets on Twitter. Twitter data present challenges because they are streaming and each message is no more than 140 characters. 
 
-Topic models have found applications in a wide range of disciplines. @pritchard2000inference used a statistical model much like LDA with genetic marker data to infer population structure and relatedness in human subjects. @derose2014victorian and @roy2013victorian used LDA (and other methods) in efforts to characterize themes from a collection of Victorian novels. Other examples include a 2008 study by @hall2008studying, in which they applied LDA to examine the history of ideas. @grimmer2010bayesian applied a hierarchical topic model to study agendas in Senate press releases.
-
-
-
-
-
-
-
-
-
-
-
+  Topic models have found applications in a wide range of disciplines. @pritchard2000inference used a statistical model much like LDA with genetic marker data to infer population structure and relatedness in human subjects. @derose2014victorian and @roy2013victorian used LDA (and other methods) in efforts to characterize themes from a collection of Victorian novels. Other examples include a 2008 study by @hall2008studying, in which they applied LDA to examine the history of ideas. @grimmer2010bayesian applied a hierarchical topic model to study agendas in Senate press releases.
 
 
 
@@ -208,30 +193,31 @@ Topic models have found applications in a wide range of disciplines. @pritchard2
 \caption{Iterative process for building, computing, critiquing, and applying topic models.\label{fig:box}}
 \end{figure}
 
-The perspective that guides our data analysis is based on ideas of the University of Wisconsin-Madison statistician George Box and coworkers. @blei2014build uses the ideas of Box and colleagues in the specific case of iterative refinement of topic models. @box1976science articulated a process of scientific inquiry and statistical collaboration in which scientists put forth a hypothesis about the natural world, and, with assistance and guidance from statisticians, design experiments to test the scientific hypothesis. After statistical analysis of the experimental data, the scientific hypothesis is refined, which leads to design and implementation of another experiment, and the iterative process between scientific hypothesis and experiment continues. Box also suggested (CITATION) that a statistician, working in collaboration with scientists, might use scientific questions as motivation to develop new statistical methods in experimental design and data analysis. In this sense, there is a second iterative loop by which a statistical researcher develops novel methods because of their immediate need to answer a scientific research question. @blei2014build adapts these iterative processes to the case of latent variable models, such as LDA and related models. He argues that we view the use of a topic model for a specific data analysis task as an iterative procedure in which one proposes a simple topic model for the data analysis, fits the model, interprets the results, and then, if needed, refines the topic model with the goal of achieving data analysis results that are more consistent with the research goals. 
+  The perspective that guides our data analysis is based on ideas of the University of Wisconsin-Madison statistician George Box and coworkers. @blei2014build uses the ideas of Box and colleagues in the specific case of iterative refinement of topic models. @box1976science articulated a process of scientific inquiry and statistical collaboration in which scientists put forth a hypothesis about the natural world, and, with assistance and guidance from statisticians, design experiments to test the scientific hypothesis. After statistical analysis of the experimental data, the scientific hypothesis is refined, which leads to design and implementation of another experiment, and the iterative process between scientific hypothesis and experiment continues. Box also suggested (CITATION) that a statistician, working in collaboration with scientists, might use scientific questions as motivation to develop new statistical methods in experimental design and data analysis. In this sense, there is a second iterative loop by which a statistical researcher develops novel methods because of their immediate need to answer a scientific research question. 
+  @blei2014build adapts these iterative processes to the case of latent variable models, such as LDA and related models. He argues that we view the use of a topic model for a specific data analysis task as an iterative procedure in which one proposes a simple topic model for the data analysis, fits the model, interprets the results, and then, if needed, refines the topic model with the goal of achieving data analysis results that are more consistent with the research goals. 
 
 
 
 
 # Latent Dirichlet Allocation
 
-@blei2003latent introduced a (generative) statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. Researchers in a wide range of disciplines - including genetics, linguistics, psychology, political science, and others - have enthusiastically adopted LDA and related methods. 
+  @blei2003latent introduced a (generative) statistical model called "latent dirichlet allocation" (LDA) in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. Researchers in a wide range of disciplines - including genetics, linguistics, psychology, political science, and others - have enthusiastically adopted LDA and related models. 
 
 
 
 ## What is the intuition behind the model?
 
-As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a probability distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". In a given collection of documents, which we term a "corpus" of documents, we assume that relatively few topics - on the order of 10 to 50 for most analyses - are present. 
+  As @blei2012probabilistic writes, the key to understanding LDA is to recognize that a given document - be it a research article, a novel, or a blog post - exhibits multiple topics. Each topic, in turn, is, in a technical sense, a probability distribution over words. For example, a topic related to evolution may heavily weight the words "evolution", "evolutionary", "biology", "phylogenetic", and "species". In a given collection of documents, which we term a "corpus" of documents, we assume that relatively few topics - on the order of 10 to 50 for most analyses - are present. 
 
 ## In what sense is the model 'generative'?
 
-We say that LDA is a generative model because we specify a joint probability distribution that allows generation of observed samples. In a more precise manner, we specify a probability distribution over topics (again, where topics are themselves probability distributions over words) that is shared by the corpus. Each document can be viewed as a draw from this probability distribution. The observed topic (probability distribution over words) tells us how the words are distributed. 
+  We say that LDA is a generative model because we specify a joint probability distribution that allows generation of observed samples. In a more precise manner, we specify a probability distribution over topics (again, where topics are themselves probability distributions over words) that is shared by the corpus. Each document can be viewed as a draw from this probability distribution. The observed topic (probability distribution over words) tells us how the words are distributed. 
 
 ## What is the model?
 
-LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purposes of LDA, then, are to discover the unobserved topics from the texts and to characterize documents by the topics that they contain.
+  LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purposes of LDA, then, are to discover the unobserved topics from the texts and to characterize documents by the topics that they contain.
 
-We distinguish generative models from discriminative models. A generative model, such as LDA, is one in which we specify a joint probability distribution for all variables (including those that are unobserved) and, thus, enable the creation of observations. On the other hand, a discriminative model relies on a conditional probability distribution and doesn't permit generation of samples from the joint probability distribution. 
+  We distinguish generative models from discriminative models. A generative model, such as LDA, is one in which we specify a joint probability distribution for all variables (including those that are unobserved) and, thus, enable the creation of observations. On the other hand, a discriminative model relies on a conditional probability distribution and doesn't permit generation of samples from the joint probability distribution. 
 
 
 
@@ -245,26 +231,26 @@ We distinguish generative models from discriminative models. A generative model,
 
 ## What are its limitations? 
 
-The original LDA model However, LDA's flexibility and adaptability have reduced the impact of its initial limitations. In the last decade, researchers have devised extensions of LDA, such as "dynamic LDA", that enable one to model topic evolution over time. Another extension of LDA, which is known as "correlated LDA", accounts for correlations among topics. 
+  The original LDA model However, LDA's flexibility and adaptability have reduced the impact of its initial limitations. In the last decade, researchers have devised extensions of LDA, such as "dynamic LDA", that enable one to model topic evolution over time. Another extension of LDA, which is known as "correlated LDA", attempts to account for correlations among topics. 
 
 
 # LDA with statistical terminology
 
-We can also describe LDA with more formal statistical terminology. We let $\beta_1, \beta_2, ..., \beta_K$ be the $K$ topics, where each $\beta_k$ is a probability distribution over the vocabulary. Topic weights (or proportions) we denote by $\theta_d$ for the $d^{th}$ document. We let $\theta_{d,k}$ be the topic proportion for topic $k$ in document $d$. Topic assignments for the $d^{th}$ document are $z_d$, where $z_{d,n}$ is the topic assignment for the $n^{th}$ word in the $d^{th}$ document. Observed words for the $d^{th}$ document are $w_d$, where $w_{d, n}$ is the $n^{th}$ word for the $d^{th}$ document.
+  We can also describe LDA with more formal statistical terminology. We let $\beta_1, \beta_2, ..., \beta_K$ be the $K$ topics, where each $\beta_k$ is a probability distribution over the vocabulary. Topic weights (or proportions) we denote by $\theta_d$ for the $d^{th}$ document. We let $\theta_{d,k}$ be the topic proportion for topic $k$ in document $d$. Topic assignments for the $d^{th}$ document are $z_d$, where $z_{d,n}$ is the topic assignment for the $n^{th}$ word in the $d^{th}$ document. Observed words for the $d^{th}$ document are $w_d$, where $w_{d, n}$ is the $n^{th}$ word for the $d^{th}$ document.
 
-We then use the above notation to specify the joint probability distribution for all variables in the model:
+  We then use the above notation to specify the joint probability distribution for all variables in the model:
 
 $$p(\beta_{1:K}, \theta_{1:D}, z_{1:D}, w_{1:D}) = \prod_{i = 1}^Kp(\beta_i)\prod_{d = 1}^Dp(\theta_d)\left( \prod_{n = 1}^N p(z_{d,n}|\theta_d)p(w_{d,n}|\beta_{1:K}, z_{d,n})\right)$$
 
-The vertical bars in the last expressions denote conditional probabilities. Note that the topic assignments $z_{d,n}$ depend on the document's topic proportions. Whatismore, the observed word $w_{d,n}$ has a probability distribution that depends on both the entire collection of topics, $\beta_{1:K}$, and the topic, $z_{d,n}$, assigned to that word.
+  The vertical bars in the last expressions denote conditional probabilities. Note that the topic assignments $z_{d,n}$ depend on the document's topic proportions. Whatismore, the observed word $w_{d,n}$ has a probability distribution that depends on both the entire collection of topics, $\beta_{1:K}$, and the topic, $z_{d,n}$, assigned to that word.
 
 # Example of LDA with print media
 
-An example may help to illustrate our approach. Let's suppose that we want to understand the themes, or topics, that appear in a collection of print media articles. One strategy is to read every article in the collection. We could then assign one or more themes to each article and, at the end of our analysis, we would have a collection of themes. An alternative approach is to use topic modeling to identify topics, which we treat as themes, in the collection of articles. 
+  An example may help to illustrate our approach. Let's suppose that we want to understand the themes, or topics, that appear in a collection of print media articles. One strategy is to read every article in the collection. We could then assign one or more themes to each article and, at the end of our analysis, we would have a collection of themes. An alternative approach is to use topic modeling to identify topics, which we treat as themes, in the collection of articles. 
 
-To demonstrate our topic modeling approach to discovering themes, or topics, in print media, we used the Lexis Nexis Academic database to acquire 746 New York Times (print) articles from March 19, 20, and 21 of 2016. 
+  To demonstrate our topic modeling approach to discovering themes, or topics, in print media, we used the Lexis Nexis Academic database to acquire 746 New York Times (print) articles from March 19, 20, and 21 of 2016. 
 
-We read the raw downloaded text files into R, then partitioned the files into the 746 articles. To each article, we applied a series of text processing steps. We split each article into its distinct words and removed white space and punctuation before converting all text to lower-case. At this stage, we had a collection of words for each of the 746 distinct articles. After removing words that occurred fewer than three times in the collection of articles and those that appeared on our "stop list" of frequently occurring short words, including articles and prepositions, we created the vocabulary and the document-term matrix. We then used existing R code (from the "lda" R package) to perform collapsed Gibbs sampling to sample from the posterior probability distribution of the parameters. Note that this computational implementation requires us to specify the number of topics in the collection. We arbitrarily chose 20 topics for our initial topic models. 
+  We read the raw downloaded text files into R, then partitioned the files into the 746 articles. To each article, we applied a series of text processing steps. We split each article into its distinct words and removed white space and punctuation before converting all text to lower-case. At this stage, we had a collection of words for each of the 746 distinct articles. After removing words that occurred fewer than three times in the collection of articles and those that appeared on our "stop list" of frequently occurring short words, including articles and prepositions, we created the vocabulary and the document-term matrix. We then used existing R code (from the "lda" R package) to perform collapsed Gibbs sampling to sample from the posterior probability distribution of the parameters. Note that this computational implementation requires us to specify the number of topics in the collection. We arbitrarily chose 20 topics for our initial topic models. 
 
 
 
@@ -276,22 +262,25 @@ We read the raw downloaded text files into R, then partitioned the files into th
 
 # Inference in topic models
 
-Existing strategies for fitting topic models can be divided into two classes: 1. variational Bayes methods and 2. sampling methods. Variational Bayes methods try to approximate the posterior probability distribution by maximizing a lower bound. In this sense, variational Bayes methods approach topic model fitting from a computer science optimization perspective. Alternatively, sampling methods, such as those based on Markov chain monte carlo (MCMC) approaches, draw samples from (an approximation to) the posterior probability distribution and estimate distributional parameters by their empirical sample statistics. 
+  Existing strategies for fitting topic models can be divided into two classes: 1. variational Bayes methods and 2. sampling methods. Variational Bayes methods try to approximate the posterior probability distribution by maximizing a lower bound. In this sense, variational Bayes methods approach topic model fitting from a computer science optimization perspective. Alternatively, sampling methods, such as those based on Markov chain monte carlo (MCMC) approaches, draw samples from (an approximation to) the posterior probability distribution and estimate distributional parameters by their empirical sample statistics. 
 
-Computational implementations of both classes of strategies are freely available for the R statistical computing language. We include code to use these free implementations in the appendix.  
+  Computational implementations of both classes of strategies are freely available for the R statistical computing language. We include code in the appendix.  
 
 # Interpreting results of topic modeling
 
-Statistical inference for topic models yields estimates for topics (i.e., probability distributions over words), assignments of words (within documents) to topics, and weights of topics in each document. 
+  Statistical inference for topic models yields estimates for topics (i.e., probability distributions over words), assignments of words (within documents) to topics, and weights of topics in each document. 
 
-The user must impose meaning on the topics. For instance, a topic may put heavy weights on the words "genetics", "gene", "regulation", "DNA", "transcription", and "RNA". The data analyst needs to identify the similarities among these words - namely, that they describe concepts related to genetics and molecular biology. Fortunately, topic modeling procedures often generate topics that can be summarized in one or two words once the data analyst has inspected the most heavily weighted terms (for a given topic). 
+  The user must impose meaning on the topics. For instance, a topic may put heavy weights on the words "genetics", "gene", "regulation", "DNA", "transcription", and "RNA". The data analyst needs to identify the similarities among these words - namely, that they describe concepts related to genetics and molecular biology. Fortunately, topic modeling procedures often generate topics that can be summarized in one or two words once the data analyst has inspected the most heavily weighted terms (for a given topic). 
 
 
 # Visualizing topics
 
   Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
+  
   Word cloud construction is straightforward and implemented with freely available software, such as the R package "wordcloud". For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
+  
   One newly developed method, which is implemented in the LDAvis R package, uses a singular value decomposition of the fitted document-topic matrix to calculate principal components. Each topic is then plotted in two dimensions, where the axes represent the first two principal components. The LDAvis R package enhances this second approach by making the figures interactive with D3 javascript.
+  
   For our analysis of 746 New York Times articles, in which our initial topic models featured `r K` topics, we created wordclouds for each topic in the resulting models. 
   
   
@@ -326,7 +315,7 @@ The user must impose meaning on the topics. For instance, a topic may put heavy 
 
 # Discussion
 
-We see that the 
+  We see that the 
 
 
 
@@ -337,18 +326,16 @@ We see that the
 
 # Online resources
 
-We've posted our code, results, and manuscript on github.com. To access these materials, please visit this url: http://github.com/fboehm/aejmc-manuscript-2016
+  We've posted our code, results, and manuscript on github.com. To access these materials, please visit this url: http://github.com/fboehm/aejmc-manuscript-2016
 
 
-David Mimno, a Cornell University scholar, curates an annotated bibliography of topic modeling research[@mimno2016topic]. His bibliography is available at this url: http://mimno.infosci.cornell.edu/topics.html
+  David Mimno, a Cornell University scholar, curates an annotated bibliography of topic modeling research[@mimno2016topic]. His bibliography is available at this url: http://mimno.infosci.cornell.edu/topics.html
 
 
 # Computational implementation of LDA with R
 
-We present below instructions and code for using LDA (with a collapsed Gibbs sampler) in the R statistical computing language [@r2015].
-**Ask Dhavan about including code?** **Maybe as an appendix?**
+  We present below instructions and code for using LDA (with a collapsed Gibbs sampler) in the R statistical computing language [@r2015].
 
-Now we show all the code chunks:
 
 ```{r all-code, ref.label=all_labels(), echo=TRUE, eval=FALSE, tidy = TRUE}
 

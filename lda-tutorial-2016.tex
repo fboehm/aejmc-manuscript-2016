@@ -272,7 +272,7 @@ described similar statistical models (Pritchard et al., 2000), Blei et
 al. (2003) first applied the statistical model to text analysis.
 Researchers in a wide range of disciplines - including genetics,
 linguistics, psychology, political science, and others - have
-enthusiastically adopted LDA and related methods.
+enthusiastically adopted LDA and related models.
 
 \subsection{What is the intuition behind the
 model?}\label{what-is-the-intuition-behind-the-model}
@@ -322,8 +322,8 @@ The original LDA model However, LDA's flexibility and adaptability have
 reduced the impact of its initial limitations. In the last decade,
 researchers have devised extensions of LDA, such as ``dynamic LDA'',
 that enable one to model topic evolution over time. Another extension of
-LDA, which is known as ``correlated LDA'', accounts for correlations
-among topics.
+LDA, which is known as ``correlated LDA'', attempts to account for
+correlations among topics.
 
 \section{LDA with statistical
 terminology}\label{lda-with-statistical-terminology}
@@ -395,8 +395,8 @@ based on Markov chain monte carlo (MCMC) approaches, draw samples from
 estimate distributional parameters by their empirical sample statistics.
 
 Computational implementations of both classes of strategies are freely
-available for the R statistical computing language. We include code to
-use these free implementations in the appendix.
+available for the R statistical computing language. We include code in
+the appendix.
 
 \section{Interpreting results of topic
 modeling}\label{interpreting-results-of-topic-modeling}
@@ -421,20 +421,25 @@ present below strategies that involve static and interactive displays.
 Word clouds are a widely used method for presenting topic modeling
 results. Unfortunately, the standard approach requires a distinct word
 cloud for each topic. For models with more than ten topics, manually
-examining wordclouds becomes unwieldy. Word cloud construction is
-straightforward and implemented with freely available software, such as
-the R package ``wordcloud''. For a single topic, the default method for
-creating a word cloud involves the identification of the most heavily
-weighted words in the topic. The user may choose to assign font sizes
-that are proportional to the weights of each word. One newly developed
-method, which is implemented in the LDAvis R package, uses a singular
-value decomposition of the fitted document-topic matrix to calculate
-principal components. Each topic is then plotted in two dimensions,
-where the axes represent the first two principal components. The LDAvis
-R package enhances this second approach by making the figures
-interactive with D3 javascript. For our analysis of 746 New York Times
-articles, in which our initial topic models featured 20 topics, we
-created wordclouds for each topic in the resulting models.
+examining wordclouds becomes unwieldy.
+
+Word cloud construction is straightforward and implemented with freely
+available software, such as the R package ``wordcloud''. For a single
+topic, the default method for creating a word cloud involves the
+identification of the most heavily weighted words in the topic. The user
+may choose to assign font sizes that are proportional to the weights of
+each word.
+
+One newly developed method, which is implemented in the LDAvis R
+package, uses a singular value decomposition of the fitted
+document-topic matrix to calculate principal components. Each topic is
+then plotted in two dimensions, where the axes represent the first two
+principal components. The LDAvis R package enhances this second approach
+by making the figures interactive with D3 javascript.
+
+For our analysis of 746 New York Times articles, in which our initial
+topic models featured 30 topics, we created wordclouds for each topic in
+the resulting models.
 
 \section{Results from NY Times Articles
 Analysis}\label{results-from-ny-times-articles-analysis}
@@ -481,10 +486,7 @@ R}\label{computational-implementation-of-lda-with-r}
 
 We present below instructions and code for using LDA (with a collapsed
 Gibbs sampler) in the R statistical computing language (R Core Team,
-2015). \textbf{Ask Dhavan about including code?} \textbf{Maybe as an
-appendix?}
-
-Now we show all the code chunks:
+2015).
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -559,29 +561,20 @@ Now we show all the code chunks:
 \NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }\DataTypeTok{vocab =} \NormalTok{vocab, }
     \DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }\DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }
     \DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2016} \NormalTok{-}\StringTok{ }\DecValTok{3} \NormalTok{-}\StringTok{ }\DecValTok{21}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(wordcloud)}
+\NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
+    \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit1$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
+    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
+        \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
+\NormalTok{\}}
+\NormalTok{K <-}\StringTok{ }\DecValTok{30}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2016} \NormalTok{-}\StringTok{ }\DecValTok{3} \NormalTok{-}\StringTok{ }\DecValTok{22}\NormalTok{)}
 \NormalTok{fit2 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }\DataTypeTok{vocab =} \NormalTok{vocab, }
     \DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }\DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }
     \DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
-\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2016} \NormalTok{-}\StringTok{ }\DecValTok{3} \NormalTok{-}\StringTok{ }\DecValTok{23}\NormalTok{)}
-\NormalTok{fit3 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }\DataTypeTok{vocab =} \NormalTok{vocab, }
-    \DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }\DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }
-    \DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
-
 \KeywordTok{library}\NormalTok{(wordcloud)}
-\NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
-    \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit1$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
-    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
-        \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
-\NormalTok{\}}
 \NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
     \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit2$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
-    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
-        \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
-\NormalTok{\}}
-\KeywordTok{library}\NormalTok{(wordcloud)}
-\NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
-    \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit1$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
     \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
         \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
 \NormalTok{\}}
