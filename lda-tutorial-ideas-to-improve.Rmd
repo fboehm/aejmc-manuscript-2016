@@ -1,0 +1,27 @@
+---
+title: "LDA Tutorial - Ideas for Improvement"
+author: "Fred Boehm"
+date: "March 28, 2016"
+output: html_document
+bibliography: twitter.bib
+---
+
+
+
+First I want to outline the structure of Blei's 2012 review article.
+
+
+
+1. Introduction
+2. Latent Dirichlet Allocation
+3. LDA and probabilistic models
+4. Posterior computation for LDA
+5. Research in topic modeling
+    1. relaxing the assumptions of LDA
+    1. incorporating metadata
+    1. other kinds of data
+6. Future directions
+    1. evaluation and model checking
+    1. visualization and user interfaces
+    1. topic models for data discovery
+7. Summary (1 paragraph)
