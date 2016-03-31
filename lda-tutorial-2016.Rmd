@@ -21,7 +21,7 @@ csl: apa.csl
 
 # Abstract
 
-  We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from The New York Times. We complement our discussion with computer code (in the R computing language) that implements our methods. We close with thoughts about the future value of topic modeling to communications researchers.
+  We present a non-technical introduction to data analysis with topic models for communications researchers. We motivate the discussion with a research question from social media communications research. We then discuss statistical aspects of topic models as we illustrate these methods with data from Twitter and from The New York Times. We complement our discussion with computer code (in the R computing language) that implements our methods. We close with ideas about the future value of topic modeling to communications researchers.
 
 
 # Motivation
@@ -185,7 +185,7 @@ for (i in 1:K){
 
 
 
-# Latent Dirichlet Allocation
+# Latent Dirichlet Allocation Overview
 
   @blei2003latent introduced LDA as a (generative) statistical model in 2003. Although others had described similar statistical models [@pritchard2000inference], @blei2003latent first applied the statistical model to text analysis. As we noted above, researchers in a wide range of disciplines - including genetics, linguistics, psychology, political science, and others - have enthusiastically adopted LDA and related models to further their research efforts.
   
@@ -194,7 +194,7 @@ for (i in 1:K){
 
   LDA models have a hiearchical structure in which words make up documents, and a collection of documents is a corpus. The corpus is assumed to have (unobserved) topics, or themes. The purposes of LDA, then, are to discover the unobserved topics from the texts and to characterize documents by the topics that they contain.  
 
-## LDA Assumptions
+# LDA Assumptions
 
   One key assumption is often called the "bag of words" assumption. It states that the order of words (and the order of topics) in documents isn't important. Rather, we think of the process of generating words in a document as a matter of first choosing a probability distribution over topics, then, for each word in the document, using the selected probability distribution over topics to choose a topic, and then choosing a word from the corresponding probability distribution over the vocabulary. Hence, we allow for documents to reflect multiple topics and for each document to contain topics distinct proportions. Those familiar with probability theory will recognize the "bag of words" assumption as a statement of what probabilists call "exchangeability". 
   
@@ -331,9 +331,9 @@ for (i in 1:K){
 
   Visualizing topic modeling results is an active area of research. We present below strategies that involve static and interactive displays. Word clouds are a widely used method for presenting topic modeling results. Unfortunately, the standard approach requires a distinct word cloud for each topic. For models with more than ten topics, manually examining wordclouds becomes unwieldy. 
   
-  Word cloud construction is straightforward and implemented with freely available software, such as the R package "wordcloud". For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word.
+  Word cloud construction is straightforward and implemented with freely available software, such as the R package "wordcloud". For a single topic, the default method for creating a word cloud involves the identification of the most heavily weighted words in the topic. The user may choose to assign font sizes that are proportional to the weights of each word so that more heavily weighted words have a larger font size.
   
-  One newly developed method, which is implemented in the LDAvis R package [@r-LDAvis], uses a singular value decomposition of the fitted document-topic matrix to calculate principal components. Each topic is then plotted in two dimensions, where the axes represent the first two principal components. The LDAvis R package enhances this second approach by making the figures interactive with D3 javascript.
+  One newly developed method, which is implemented in the LDAvis R package [@r-LDAvis], uses a computer program called D3 javascript to make interactive figures.
   
   For our analyses of tweets and New York Times articles, we created wordclouds for each topic in the resulting models. 
 
@@ -366,6 +366,8 @@ Examination of the resulting word clouds demonstrates that LDA is able to discov
 
 # Results from Tweets Analysis
 
+As with the New York Times analysis results, we chose to display four of the 20 word clouds that we produced. Figure \ref{fig:twc1} shows the wordcloud for a topic that is difficult to summarize in a single word. Many of the words have positive, life-affirming connotations, while a few, such as "dangerous" and "unfollowed" complicate the cohesiveness of this topic. Figure \ref{fig:twc2} has many words - such as "god", "love", "life", and "mother" - that suggest a wholesome life. The third of the four Twitter-derived word clouds is in Figure \ref{fig:twc3}. It is a sports topic. However, unlike the print media sports topic, which focused on baseball and racing, the Twitter sports topic emphasizes soccer (British football) and basketball. Figure \ref{fig:twc4} contains the last of the four tweet-derived word clouds. Its theme is entertainment. It features names of famous performers - "justin", "bieber", "rihanna" - and words like "video", "music", and "show".
+
 
 
 
@@ -397,12 +399,7 @@ Examination of the resulting word clouds demonstrates that LDA is able to discov
 
 # Discussion
 
-  We have presented preliminary results of our analysis of New York Times articles and tweets from March 19, 20, and 21, 2016. Looking back at Figure \ref{fig:box}, we see that we've omitted the model critiquing step [@blei2014build]. Despite this, we still managed to discover meaningful topics in both the tweets and the New York Times articles with our initial models. Development of model critiquing strategies is one of our immediate research goals. 
-
-
-
-
-# Future directions
+  We have presented results of our analysis of New York Times articles and tweets from March 19, 20, and 21, 2016. Looking back at Figure \ref{fig:box}, we see that we've omitted the model critiquing step [@blei2014build]. Despite this, we still managed to discover meaningful topics in both the tweets and the New York Times articles. Development of model critiquing strategies is one of our immediate research goals. 
 
   Analysis of new data sources and structures often requires development of new statistical and computational methods. Topic models, despite their newness, have already contributed to scholarly pursuits in a wide range of social science, science, and humanities disciplines. Topic model-based analyses in journalism and communications research provide a practical method for summarizing and exploring the vast array of textual data that we encounter. Furthermore, analysis with topic models complements close reading and human annotation of texts. To fully realize the potential of topic modeling in communications research, we need to characterize the extent to which manual annotation of texts coincides with topic model-based annotation of texts. When such foundations are laid, we will realize a useful version of a topic-based browser for texts, as @blei2012probabilistic envisions. 
 

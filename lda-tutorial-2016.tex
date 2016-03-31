@@ -145,10 +145,10 @@ We present a non-technical introduction to data analysis with topic
 models for communications researchers. We motivate the discussion with a
 research question from social media communications research. We then
 discuss statistical aspects of topic models as we illustrate these
-methods with data from The New York Times. We complement our discussion
-with computer code (in the R computing language) that implements our
-methods. We close with thoughts about the future value of topic modeling
-to communications researchers.
+methods with data from Twitter and from The New York Times. We
+complement our discussion with computer code (in the R computing
+language) that implements our methods. We close with ideas about the
+future value of topic modeling to communications researchers.
 
 \section{Motivation}\label{motivation}
 
@@ -273,7 +273,8 @@ this step. Recent research (Mimno \& Blei, 2011) has made progress in
 developing methods for this last step in the iterative process
 articulated by D. M. Blei (2014).
 
-\section{Latent Dirichlet Allocation}\label{latent-dirichlet-allocation}
+\section{Latent Dirichlet Allocation
+Overview}\label{latent-dirichlet-allocation-overview}
 
 D. M. Blei et al. (2003) introduced LDA as a (generative) statistical
 model in 2003. Although others had described similar statistical models
@@ -299,7 +300,7 @@ assumed to have (unobserved) topics, or themes. The purposes of LDA,
 then, are to discover the unobserved topics from the texts and to
 characterize documents by the topics that they contain.
 
-\subsection{LDA Assumptions}\label{lda-assumptions}
+\section{LDA Assumptions}\label{lda-assumptions}
 
 One key assumption is often called the ``bag of words'' assumption. It
 states that the order of words (and the order of topics) in documents
@@ -428,14 +429,11 @@ available software, such as the R package ``wordcloud''. For a single
 topic, the default method for creating a word cloud involves the
 identification of the most heavily weighted words in the topic. The user
 may choose to assign font sizes that are proportional to the weights of
-each word.
+each word so that more heavily weighted words have a larger font size.
 
 One newly developed method, which is implemented in the LDAvis R package
-(Sievert \& Shirley, 2015), uses a singular value decomposition of the
-fitted document-topic matrix to calculate principal components. Each
-topic is then plotted in two dimensions, where the axes represent the
-first two principal components. The LDAvis R package enhances this
-second approach by making the figures interactive with D3 javascript.
+(Sievert \& Shirley, 2015), uses a computer program called D3 javascript
+to make interactive figures.
 
 For our analyses of tweets and New York Times articles, we created
 wordclouds for each topic in the resulting models.
@@ -479,6 +477,22 @@ of words about sports.
 \section{Results from Tweets
 Analysis}\label{results-from-tweets-analysis}
 
+As with the New York Times analysis results, we chose to display four of
+the 20 word clouds that we produced. Figure \ref{fig:twc1} shows the
+wordcloud for a topic that is difficult to summarize in a single word.
+Many of the words have positive, life-affirming connotations, while a
+few, such as ``dangerous'' and ``unfollowed'' complicate the
+cohesiveness of this topic. Figure \ref{fig:twc2} has many words - such
+as ``god'', ``love'', ``life'', and ``mother'' - that suggest a
+wholesome life. The third of the four Twitter-derived word clouds is in
+Figure \ref{fig:twc3}. It is a sports topic. However, unlike the print
+media sports topic, which focused on baseball and racing, the Twitter
+sports topic emphasizes soccer (British football) and basketball. Figure
+\ref{fig:twc4} contains the last of the four tweet-derived word clouds.
+Its theme is entertainment. It features names of famous performers -
+``justin'', ``bieber'', ``rihanna'' - and words like ``video'',
+``music'', and ``show''.
+
 \begin{figure}
 \includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/tw-wordcloud1-5.pdf}
 \caption{Wordcloud for one topic from a 20-topic model of 193,211 tweets. Larger font size corresponds to greater weight of that word in this topic.\label{fig:twc1}}
@@ -501,15 +515,12 @@ Analysis}\label{results-from-tweets-analysis}
 
 \section{Discussion}\label{discussion}
 
-We have presented preliminary results of our analysis of New York Times
-articles and tweets from March 19, 20, and 21, 2016. Looking back at
-Figure \ref{fig:box}, we see that we've omitted the model critiquing
-step (D. M. Blei, 2014). Despite this, we still managed to discover
-meaningful topics in both the tweets and the New York Times articles
-with our initial models. Development of model critiquing strategies is
-one of our immediate research goals.
-
-\section{Future directions}\label{future-directions}
+We have presented results of our analysis of New York Times articles and
+tweets from March 19, 20, and 21, 2016. Looking back at Figure
+\ref{fig:box}, we see that we've omitted the model critiquing step (D.
+M. Blei, 2014). Despite this, we still managed to discover meaningful
+topics in both the tweets and the New York Times articles. Development
+of model critiquing strategies is one of our immediate research goals.
 
 Analysis of new data sources and structures often requires development
 of new statistical and computational methods. Topic models, despite
