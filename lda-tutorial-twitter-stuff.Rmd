@@ -1,0 +1,62 @@
+---
+title: "LDA Tutorial and Twitter data"
+author: "Fred Boehm"
+date: "March 28, 2016"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, tidy = TRUE)
+```
+
+We start working with the Twitter files here. We'll ultimately need to move the code & text into our tutorial. 
+
+```{r load-tweets}
+tweet_dir <- "data/tweets/"
+fns <- dir(tweet_dir)
+out <- character(0)
+for (file in fns){
+  tmp <- read.csv(file.path(tweet_dir, file), stringsAsFactors=FALSE)
+  out <- rbind(out, tmp)
+}
+```
+
+```{r en-lang-only}
+tweets <- out[out$lang == "en",]
+```
+
+```{r split-tweets-to-words-and-clean}
+tw_txt<- tweets$text
+library(magrittr)
+library(tm)
+tw_words <- stringr::str_split(tw_txt, pattern = " ") %>% 
+  sapply(FUN = wordtools::remove_urls) %>% 
+  sapply(FUN = function(x) gsub("'", "", x)) %>% 
+  # remove apostrophes
+  sapply(FUN = function(x) gsub("[[:punct:]]", " ", x)) %>%  
+  # replace punctuation with space
+  sapply(FUN = function(x) gsub("[[:cntrl:]]", " ", x)) %>% 
+  # replace control characters with space
+  sapply(FUN = function(x) gsub("^[[:space:]]+", "", x)) %>% 
+  # remove whitespace at beginning of documents
+  sapply(FUN = function(x) gsub("[[:space:]]+$", "", x)) %>% 
+  sapply(FUN = function(x) gsub("&amp", "", x)) %>%
+  sapply(FUN = function(x) gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", x)) %>%
+  sapply(FUN = function(x) gsub("@\\w+", "", x)) %>%
+  sapply(FUN = function(x) gsub("[[:punct:]]", "", x)) %>%
+  sapply(FUN = function(x) gsub("[[:digit:]]", "", x)) %>% 
+  sapply(FUN = function(x) stringr::str_replace_all(x, "[^[:graph:]]", " ")) %>%
+  sapply(FUN = function(x) gsub("http\\w+", "", x)) %>% 
+  sapply(FUN = function(x) gsub("[ \t]{2,}", "", x)) %>% 
+  sapply(FUN = function(x) gsub("^\\s+|\\s+$", "", x)) %>% 
+  # remove whitesp
+  sapply(FUN = function(x)tolower(x)) %>%
+  sapply(FUN = function(x)x[!(x == "")]) %>% 
+  # remove elements that are ""
+  sapply(FUN = function(x)x[!(x %in% stopwords("SMART"))]) 
+# remove stopwords
+
+  
+```
+
+

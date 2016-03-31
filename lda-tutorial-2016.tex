@@ -121,7 +121,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{}
-\chead{}
+\chead{Data Analysis with Topic Models for Communications Researchers}
 \rhead{}
 
 % Redefines (sub)paragraphs to behave more like sections
@@ -139,8 +139,6 @@
 
 \pagestyle{fancy}
 
-\listoftodos
-
 \section{Abstract}\label{abstract}
 
 We present a non-technical introduction to data analysis with topic
@@ -153,8 +151,6 @@ methods. We close with thoughts about the future value of topic modeling
 to communications researchers.
 
 \section{Motivation}\label{motivation}
-
-\todo[color=pink]{Can we write a scenario like that of Blei's 2012 article?}
 
 We are in the big data era. Social media inundates us with status
 updates and tweets, while bloggers share their views on current events.
@@ -170,16 +166,18 @@ mass shootings, but other results may deal with other types of
 ``shootings'', such as film shooting or accidental shooting. Even if we
 specify that the two-word phrase ``mass shooting'' must appear in our
 results, we still may find some articles that merely mention mass
-shootings without focusing on one or more mass shootings.
+shootings without focusing on one or more mass shootings. Whatismore,
+we'll miss relevant articles that don't happen to use the term ``mass
+shooting''.
 
-Blei (2012) envisions an alternative search strategy in which we search
-for articles that are \emph{about} ``mass shootings''. Some of the
-resulting articles would have the phrase ``mass shooting'', but
+D. M. Blei (2012) envisions an alternative search strategy in which we
+search for articles that are \emph{about} ``mass shootings''. Some of
+the resulting articles would have the phrase ``mass shooting'', but
 containing that two-word phrase is not required; the sole requirement is
-that the article focus on one or more mass shootings. That is, we'd like
-to see all of the articles that have the theme, or ``topic'', mass
-shooting. Topic modeling is one method that may ultimately enable us to
-do the theme-based browsing that Blei (2012) suggests.
+that the article focus on mass shootings. That is, we'd like to see all
+of the articles that have the theme, or ``topic'', mass shooting. Topic
+modeling is one method that may ultimately enable us to do the
+theme-based browsing that D. M. Blei (2012) suggests.
 
 ``Topic modeling'' refers to a collection of statistical and machine
 learning methods that have the goal of discovering latent topics in a
@@ -187,13 +185,15 @@ large collection, or ``corpus'', of texts. The tremendous rise in
 computing speed and memory capacity, coupled with the increasing
 availability of digitized texts, has enabled researchers working at the
 interface of quantitative methods and social sciences to treat written
-texts as data. While data analysis of documents is still in its infancy,
-scientists nevertheless have made great progress towards computational
-dissection and interpretation of texts. We detail below, with limited
-use of statistical terminology, how these methods work and why they may
-be useful in communications research. We illustrate topic modeling
-methods in the analysis of all New York Times articles from three days
-in March 2016. We also provide an appendix with computer code (in the R
+texts as data.
+
+While data analysis of documents is still in its infancy, scientists
+nevertheless have made great progress towards computational dissection
+and interpretation of texts. We detail below, with limited use of
+statistical terminology, how these methods work and why they may be
+useful in communications research. We illustrate topic modeling methods
+in the analysis of all New York Times articles from three days in March
+2016. We also provide an appendix with computer code (in the R
 programming language) that implements these methods.
 
 \section{Background}\label{background}
@@ -202,24 +202,24 @@ LDA is an extension of an earlier text analysis method called
 ``probabilistic latent semantic analysis'' (pLSA) (Hofmann, 1999).
 Hofmann (1999) described pLSA as a ``latent class model for factor
 analysis of count data''. The novelty of LDA, compared to pLSA, is that
-LDA places a Dirichlet process prior on the probability distributions of
-words. This use of a Dirichlet process prior makes computations
-convenient because of a Bayesian statistical concept called
-``conjugacy''. That is, the posterior distribution, which is the object
-of statistical inference, is also a Dirichlet process.
+LDA places a Dirichlet prior on the probability distributions of words.
+This use of a Dirichlet prior makes computations convenient because of a
+Bayesian statistical concept called ``conjugacy''. That is, the
+posterior probability distribution, which is the object of statistical
+inference, is also a Dirichlet distribution.
 
-In the 13 years since the publication of Blei, Ng, \& Jordan (2003),
-researchers have developed a wide variety of extensions to LDA. Many of
-these extensions of LDA accommodate relationships among topics. Widely
-used extensions of LDA include correlated topic models (Blei \&
-Lafferty, 2007), hierarchical topic models (D. Griffiths \& Tenenbaum,
-2004), author-topic models (Rosen-Zvi, Griffiths, Steyvers, \& Smyth,
-2004), and dynamic topic models (Blei \& Lafferty, 2006). Looking
-towards the future, researchers will need to fine tune and extend
-existing methods to accommodate new text data structures. One current
-research frontier is in topic modeling of tweets on Twitter. Twitter
-data present challenges because they are streaming and each message is
-no more than 140 characters.
+In the 13 years since the publication of D. M. Blei, Ng, \& Jordan
+(2003), researchers have developed a wide variety of extensions to LDA.
+Many of these extensions of LDA accommodate relationships among topics.
+Widely used extensions of LDA include correlated topic models (D. M.
+Blei \& Lafferty, 2007), hierarchical topic models (D. Griffiths \&
+Tenenbaum, 2004), author-topic models (Rosen-Zvi, Griffiths, Steyvers,
+\& Smyth, 2004), and dynamic topic models (D. M. Blei \& Lafferty,
+2006). Looking towards the future, researchers will need to fine tune
+and extend existing methods to accommodate new text data structures. One
+current research frontier is in topic modeling of tweets on Twitter.
+Twitter data present challenges because they are streaming and each
+message is no more than 140 characters.
 
 Topic models have found applications in a wide range of disciplines.
 Pritchard, Stephens, \& Donnelly (2000) used a statistical model much
@@ -230,7 +230,9 @@ characterize themes from a collection of Victorian novels. Other
 examples include a 2008 study by Hall, Jurafsky, \& Manning (2008), in
 which they applied LDA to examine the history of ideas. Grimmer (2010)
 applied a hierarchical topic model to study agendas in Senate press
-releases.
+releases. We expect that the importance of topic modeling methods will
+continue to grow as digitized texts and digital media become more
+abundant.
 
 \section{Box's Loop \& Data analysis}\label{boxs-loop-data-analysis}
 
@@ -241,54 +243,56 @@ releases.
 
 The perspective that guides our data analysis is based on ideas of the
 University of Wisconsin-Madison statistician George Box and coworkers.
-Blei (2014) uses the ideas of Box and colleagues in the specific case of
-iterative refinement of topic models. Box (1976) articulated a process
-of scientific inquiry and statistical collaboration in which scientists
-put forth a hypothesis about the natural world, and, with assistance and
-guidance from statisticians, design experiments to test the scientific
-hypothesis. After statistical analysis of the experimental data, the
-scientific hypothesis is refined, which leads to design and
-implementation of another experiment, and the iterative process between
-scientific hypothesis and experiment continues. Box also suggested
-(CITATION) that a statistician, working in collaboration with
+D. M. Blei (2014) uses the ideas of Box and colleagues in the specific
+case of iterative refinement of topic models. Box (1976) articulated a
+process of scientific inquiry and statistical collaboration in which
+scientists put forth a hypothesis about the natural world, and, with
+assistance and guidance from statisticians, design experiments to test
+the scientific hypothesis. After statistical analysis of the
+experimental data, the scientific hypothesis is refined, which leads to
+design and implementation of another experiment, and the iterative
+process between scientific hypothesis and experiment continues. Box
+(1976) also suggested that a statistician, working in collaboration with
 scientists, might use scientific questions as motivation to develop new
 statistical methods in experimental design and data analysis. In this
 sense, there is a second iterative loop by which a statistical
-researcher develops novel methods because of their immediate need to
-answer a scientific research question. Blei (2014) adapts these
-iterative processes to the case of latent variable models, such as LDA
-and related models. He argues that we view the use of a topic model for
-a specific data analysis task as an iterative procedure in which one
-proposes a simple topic model for the data analysis, fits the model,
-interprets the results, and then, if needed, refines the topic model
-with the goal of achieving data analysis results that are more
-consistent with the research goals.
+researcher develops novel statistical methods because of their immediate
+need to answer a scientific research question.
+
+D. M. Blei (2014) adapts these iterative processes to the case of latent
+variable models, such as LDA and other topic models. He argues that we
+view the use of a topic model for a specific data analysis task as an
+iterative procedure in which one proposes a simple topic model for the
+data analysis, fits the model, interprets the results, and then, if
+needed, refines the topic model with the goal of achieving data analysis
+results that are more consistent with the research goals.
+
+A critical step in this process is that of model critiquing. D. M. Blei
+(2014) suggests using posterior predictive checks, evaluating
+performance of desired tasks, and considering prediction performance in
+this step. Recent research (Mimno \& Blei, 2011) has made progress in
+developing methods for this last step in the iterative process
+articulated by D. M. Blei (2014).
 
 \section{Latent Dirichlet Allocation}\label{latent-dirichlet-allocation}
 
-Blei et al. (2003) introduced a (generative) statistical model called
-``latent dirichlet allocation'' (LDA) in 2003. Although others had
-described similar statistical models (Pritchard et al., 2000), Blei et
-al. (2003) first applied the statistical model to text analysis.
-Researchers in a wide range of disciplines - including genetics,
-linguistics, psychology, political science, and others - have
-enthusiastically adopted LDA and related models.
+D. M. Blei et al. (2003) introduced LDA as a (generative) statistical
+model in 2003. Although others had described similar statistical models
+(Pritchard et al., 2000), D. M. Blei et al. (2003) first applied the
+statistical model to text analysis. As we noted above, researchers in a
+wide range of disciplines - including genetics, linguistics, psychology,
+political science, and others - have enthusiastically adopted LDA and
+related models to further their research efforts.
 
-\subsection{What is the intuition behind the
-model?}\label{what-is-the-intuition-behind-the-model}
-
-As Blei (2012) writes, the key to understanding LDA is to recognize that
-a given document - be it a research article, a novel, or a blog post -
-exhibits multiple topics. Each topic, in turn, is, in a technical sense,
-a probability distribution over words. For example, a topic related to
-evolution may heavily weight the words ``evolution'', ``evolutionary'',
-``biology'', ``phylogenetic'', and ``species''. In a given collection of
-documents, which we term a ``corpus'' of documents, we assume that
-relatively few topics - on the order of 10 to 50 for most analyses - are
-present.
-
-\subsection{\texorpdfstring{In what sense is the model
-`generative'?}{In what sense is the model generative?}}\label{in-what-sense-is-the-model-generative}
+As D. M. Blei (2012) writes, the key to understanding LDA is to
+recognize that a given document - be it a research article, a novel, or
+a blog post - exhibits multiple topics. Each topic, in turn, is, in a
+technical sense, a probability distribution over words. For example, a
+topic related to evolution may heavily weight the words ``evolution'',
+``evolutionary'', ``biology'', ``phylogenetic'', and ``species''. In a
+given collection of documents, which we term a ``corpus'' of documents,
+we assume that relatively few topics - on the order of 10 to 50 for most
+analyses - are present.
 
 We say that LDA is a generative model because we specify a joint
 probability distribution that allows generation of observed samples. In
@@ -297,8 +301,6 @@ a more precise manner, we specify a probability distribution over topics
 words) that is shared by the corpus. Each document can be viewed as a
 draw from this probability distribution. The observed topic (probability
 distribution over words) tells us how the words are distributed.
-
-\subsection{What is the model?}\label{what-is-the-model}
 
 LDA models have a hiearchical structure in which words make up
 documents, and a collection of documents is a corpus. The corpus is
@@ -314,16 +316,35 @@ hand, a discriminative model relies on a conditional probability
 distribution and doesn't permit generation of samples from the joint
 probability distribution.
 
-\subsection{What are its assumptions?}\label{what-are-its-assumptions}
+\subsection{LDA Assumptions}\label{lda-assumptions}
 
-\subsection{What are its limitations?}\label{what-are-its-limitations}
+One key assumption is often called the ``bag of words'' assumption. It
+states that the order of words (and the order of topics) in documents
+isn't important. Rather, we think of the process of generating words in
+a document as a matter of first choosing a probability distribution over
+topics, then, for each word in the document, using the selected
+probability distribution over topics to choose a topic, and then
+choosing a word from the corresponding probability distribution over the
+vocabulary. Hence, we allow for documents to reflect multiple topics and
+for each document to contain topics distinct proportions. Those familiar
+with probability theory will recognize the ``bag of words'' assumption
+as a statement of what probabilists call ``exchangeability''.
 
-The original LDA model However, LDA's flexibility and adaptability have
-reduced the impact of its initial limitations. In the last decade,
-researchers have devised extensions of LDA, such as ``dynamic LDA'',
-that enable one to model topic evolution over time. Another extension of
-LDA, which is known as ``correlated LDA'', attempts to account for
-correlations among topics.
+Hidden structures play key roles in LDA. While documents and their words
+are observed, there remain three levels of hidden structures. The
+topics, the per-document topic distributions, and the per-document,
+per-word topic assignments constitute the unobserved variables that are
+the goal of our inference procedures. In other words, our statistical
+challenge, when working with topic models, is to use the observed
+structures - documents and their words - to infer the three types of
+hidden structures.
+
+LDA's flexibility and adaptability have reduced the impact of its
+initial limitations. In the last decade, researchers have devised
+extensions of LDA, such as ``dynamic topic models'', that enable one to
+model topic evolution over time(D. M. Blei \& Lafferty, 2006). Other
+extensions of LDA attempt to account for correlations among topics (D.
+M. Blei \& Lafferty, 2007, Li \& McCallum (2006)).
 
 \section{LDA with statistical
 terminology}\label{lda-with-statistical-terminology}
@@ -382,6 +403,29 @@ probability distribution of the parameters. Note that this computational
 implementation requires us to specify the number of topics in the
 collection. We arbitrarily chose 20 topics for our initial topic models.
 
+\section{Example of LDA with social
+media}\label{example-of-lda-with-social-media}
+
+We downloaded tweets from the Twitter streaming API on the same three
+consecutive days (March 19, 20, 21 in 2016). Due to the large volume of
+downloaded tweets, we limited study to a one-hour period on each day
+(approximately 12pm Central time to 1pm Central time). The downloaded
+tweets constitute approximately one percent of all tweets during the
+selected time periods, according to Twitter's documentation. We then
+removed tweets that were in languages other than English, which left us
+with a total of 193211 tweets.
+
+At this point, we made an important modeling decision in which we
+decided to treat each tweet as an independent document. This was an
+important decision because tweets are forced to be short (no more than
+140 characters in length) and because a single user may have multiple
+related tweets in our collection.
+
+Processing our tweets requires removal of punctuation, URLs, and
+graphical characters that appear in tweets. After completing that step,
+we divided each tweet into its words and fit LDA models. As with the
+print media analysis, we chose to fit topic models with 20 topics.
+
 \section{Inference in topic models}\label{inference-in-topic-models}
 
 Existing strategies for fitting topic models can be divided into two
@@ -395,7 +439,7 @@ based on Markov chain monte carlo (MCMC) approaches, draw samples from
 estimate distributional parameters by their empirical sample statistics.
 
 Computational implementations of both classes of strategies are freely
-available for the R statistical computing language. We include code in
+available for the R statistical computing language. We include R code in
 the appendix.
 
 \section{Interpreting results of topic
@@ -404,17 +448,16 @@ modeling}\label{interpreting-results-of-topic-modeling}
 Statistical inference for topic models yields estimates for topics
 (i.e., probability distributions over words), assignments of words
 (within documents) to topics, and weights of topics in each document.
+However, the user must impose meaning on the topics. For instance, a
+topic may put heavy weights on the words ``genetics'', ``gene'',
+``regulation'', ``DNA'', ``transcription'', and ``RNA''. The data
+analyst needs to identify the similarities among these words - namely,
+that they describe concepts related to genetics and molecular biology.
+Fortunately, topic modeling procedures often generate topics that can be
+summarized in one or two words once the data analyst has inspected the
+most heavily weighted terms (for a given topic).
 
-The user must impose meaning on the topics. For instance, a topic may
-put heavy weights on the words ``genetics'', ``gene'', ``regulation'',
-``DNA'', ``transcription'', and ``RNA''. The data analyst needs to
-identify the similarities among these words - namely, that they describe
-concepts related to genetics and molecular biology. Fortunately, topic
-modeling procedures often generate topics that can be summarized in one
-or two words once the data analyst has inspected the most heavily
-weighted terms (for a given topic).
-
-\section{Visualizing topics}\label{visualizing-topics}
+\section{Visualizing topic models}\label{visualizing-topic-models}
 
 Visualizing topic modeling results is an active area of research. We
 present below strategies that involve static and interactive displays.
@@ -430,19 +473,32 @@ identification of the most heavily weighted words in the topic. The user
 may choose to assign font sizes that are proportional to the weights of
 each word.
 
-One newly developed method, which is implemented in the LDAvis R
-package, uses a singular value decomposition of the fitted
-document-topic matrix to calculate principal components. Each topic is
-then plotted in two dimensions, where the axes represent the first two
-principal components. The LDAvis R package enhances this second approach
-by making the figures interactive with D3 javascript.
+One newly developed method, which is implemented in the LDAvis R package
+(Sievert \& Shirley, 2015), uses a singular value decomposition of the
+fitted document-topic matrix to calculate principal components. Each
+topic is then plotted in two dimensions, where the axes represent the
+first two principal components. The LDAvis R package enhances this
+second approach by making the figures interactive with D3 javascript.
 
-For our analysis of 746 New York Times articles, in which our initial
-topic models featured 30 topics, we created wordclouds for each topic in
-the resulting models.
+For our analyses of tweets and New York Times articles, we created
+wordclouds for each topic in the resulting models.
 
-\section{Results from NY Times Articles
-Analysis}\label{results-from-ny-times-articles-analysis}
+\section{Results from New York Times Articles
+Analysis}\label{results-from-new-york-times-articles-analysis}
+
+Examination of the resulting word clouds demonstrates that LDA is able
+to discover coherent themes from a text corpus. We see that our
+wordcloud in Figure \textasciitilde{}\ref{fig:wc1} contains words, such
+as ``ballet'', ``song'', ``music'', and ``film'', that constitute the
+theme that we can label as ``entertainment''. The wordcloud in Figure
+\textasciitilde{}\ref{fig:wc2} may be less clearly exhibiting a coherent
+theme, but it does contain a number of words, such as ``boat'',
+``river'', ``expedition'', related to travel \& adventure. Figure
+\textasciitilde{}\ref{fig:wc3} is difficult to interpret. On the one
+hand, it contains ``books'', ``review'', and ``story'', which might
+suggest a literature theme, but at the same time it contains a
+collection of numbers. Figure \textasciitilde{}\ref{fig:wc4} forms a
+cohesive collection of words about sports.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-1.pdf}
@@ -464,17 +520,58 @@ Analysis}\label{results-from-ny-times-articles-analysis}
 \caption{Wordcloud for one topic from a 20-topic model of 746 New York Times articles. Larger font size corresponds to greater weight of that word in this topic.\label{fig:wc4}}
 \end{figure}
 
+\section{Results from Tweets
+Analysis}\label{results-from-tweets-analysis}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/tw-wordcloud1-5.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 193,211 tweets. Larger font size corresponds to greater weight of that word in this topic.\label{fig:twc1}}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/tw-wordcloud1-2.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 193,211 tweets. Larger font size corresponds to greater weight of that word in this topic.\label{fig:twc2}}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/tw-wordcloud1-3.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 193,211 tweets. Larger font size corresponds to greater weight of that word in this topic.\label{fig:twc3}}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/tw-wordcloud1-4.pdf}
+\caption{Wordcloud for one topic from a 20-topic model of 193,211 tweets. Larger font size corresponds to greater weight of that word in this topic.\label{fig:twc4}}
+\end{figure}
+
 \section{Discussion}\label{discussion}
 
-We see that the
+We have presented preliminary results of our analysis of New York Times
+articles and tweets from March 19, 20, and 21, 2016. Looking back at
+Figure \textasciitilde{}\ref{fig:box}, we see that we haven't completed
+the iterative loop that D. M. Blei (2014) suggests. While D. M. Blei
+(2014) suggests that we critique the initial models using posterior
+predictive checks and other methods, we discovered meaningful topics in
+both the tweets and the New York Times articles with our initial models.
+Development of methods for model critiquing is one of our immediate
+research goals.
 
 \section{Future directions}\label{future-directions}
 
-\section{Online resources}\label{online-resources}
+Analysis of new data sources and structures often requires development
+of new statistical and computational methods. Topic models, despite
+their newness, have already contributed to scholarly pursuits in a wide
+range of social science, science, and humanities disciplines. Topic
+model-based analyses in journalism and communications research provide a
+practical method for summarizing and exploring the vast array of textual
+data that we encounter. Furthermore, analysis with topic models
+complements close reading and human annotation of texts. To fully
+realize the potential of topic modeling in communications research, we
+need to characterize the extent to which manual annotation of texts
+coincides with topic model-based annotation of texts. When such
+foundations are laid, we will realize a useful version of a topic-based
+browser for texts, as D. M. Blei (2012) envisions.
 
-We've posted our code, results, and manuscript on github.com. To access
-these materials, please visit this url:
-\url{http://github.com/fboehm/aejmc-manuscript-2016}
+\section{Online resources}\label{online-resources}
 
 David Mimno, a Cornell University scholar, curates an annotated
 bibliography of topic modeling research(Mimno, 2016). His bibliography
@@ -484,34 +581,33 @@ is available at this url:
 \section{Computational implementation of LDA with
 R}\label{computational-implementation-of-lda-with-r}
 
-We present below instructions and code for using LDA (with a collapsed
-Gibbs sampler) in the R statistical computing language (R Core Team,
-2015).
+We present below code for using LDA (with a collapsed Gibbs sampler) in
+the R statistical computing language (R Core Team, 2015).
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(knitr)}
-\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{cache =} \OtherTok{TRUE}\NormalTok{)  }\CommentTok{# hide source code in the document}
+\NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{warning =} \OtherTok{FALSE}\NormalTok{, }
+    \DataTypeTok{cache =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{tidy =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{tidy.opts =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{blank =} \OtherTok{FALSE}\NormalTok{, }
+        \DataTypeTok{width.cutoff =} \DecValTok{60}\NormalTok{))  }\CommentTok{# hide source code in the document}
 \KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
 \NormalTok{devtools::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"fboehm/wordtools"}\NormalTok{)}
-\NormalTok{tx1 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-02.TXT"}\NormalTok{, }
-    \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }
-    \DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{tx2 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"~/bret-research/twitter/aejmc-manuscript-2016/data/The_New_York_Times2016-03-21_17-04.TXT"}\NormalTok{, }
-    \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }
-    \DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{tx1 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"data/The_New_York_Times2016-03-21_17-02.TXT"}\NormalTok{, }
+    \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }
+    \DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{tx2 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"data/The_New_York_Times2016-03-21_17-04.TXT"}\NormalTok{, }
+    \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }
+    \DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
 \NormalTok{tx <-}\StringTok{ }\KeywordTok{c}\NormalTok{(tx1, tx2)}
-\KeywordTok{library}\NormalTok{(wordtools)  }\CommentTok{#install my R package 'wordtools'}
+\KeywordTok{library}\NormalTok{(wordtools)  }\CommentTok{#load my R package 'wordtools'}
 \NormalTok{tx_list <-}\StringTok{ }\KeywordTok{split_tx}\NormalTok{(}\DataTypeTok{tx =} \NormalTok{tx, }\DataTypeTok{patt =} \StringTok{"Copyright 20"}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(stringr)}
-\NormalTok{tx_list2 <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[-(}\DecValTok{1}\NormalTok{:}\KeywordTok{which}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(}\DataTypeTok{string =} \NormalTok{x, }\DataTypeTok{pattern =} \StringTok{"LENGTH"}\NormalTok{)))], }
-    \DataTypeTok{X =} \NormalTok{tx_list)}
+\NormalTok{tx_list2 <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[-(}\DecValTok{1}\NormalTok{:}\KeywordTok{which}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(}\DataTypeTok{string =} \NormalTok{x, }
+    \DataTypeTok{pattern =} \StringTok{"LENGTH"}\NormalTok{)))], }\DataTypeTok{X =} \NormalTok{tx_list)}
 \NormalTok{myfun <-}\StringTok{ }\NormalTok{function(x, }\DataTypeTok{pattern =} \StringTok{"Web Blog"}\NormalTok{) \{}
     \NormalTok{collapsed <-}\StringTok{ }\KeywordTok{paste}\NormalTok{(x, }\DataTypeTok{collapse =} \StringTok{" "}\NormalTok{)}
     \NormalTok{!stringr::}\KeywordTok{str_detect}\NormalTok{(collapsed, }\DataTypeTok{pattern =} \NormalTok{pattern)}
 \NormalTok{\}}
-
-
 \NormalTok{indswb <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{myfun, }\DataTypeTok{X =} \NormalTok{tx_list2)}
 \NormalTok{indsurl <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{myfun, }\DataTypeTok{pattern =} \StringTok{"URL"}\NormalTok{, }\DataTypeTok{X =} \NormalTok{tx_list2)}
 \KeywordTok{library}\NormalTok{(magrittr)}
@@ -526,13 +622,16 @@ Gibbs sampler) in the R statistical computing language (R Core Team,
 \KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:punct:]]"}\NormalTok{, }\StringTok{" "}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# replace punctuation with space}
 \KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:cntrl:]]"}\NormalTok{, }\StringTok{" "}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# replace control characters with space}
 \KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"^[[:space:]]+"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# remove whitespace at beginning of documents}
-\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:space:]]+$"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# remove whitesp}
-\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{tolower}\NormalTok{(x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x ==}\StringTok{ ""}\NormalTok{)]) %>%}\StringTok{ }
-\StringTok{    }\CommentTok{# remove elements that are ''}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:space:]]+$"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\CommentTok{# remove whitesp Get rid of hashtags}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }\StringTok{"#[a-z,A-Z]*"}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }
+\StringTok{    }\CommentTok{# Get rid of references to other screennames}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }\StringTok{"@[a-z,A-Z]*"}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{tolower}\NormalTok{(x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x ==}\StringTok{ }
+\StringTok{    ""}\NormalTok{)]) %>%}\StringTok{ }\CommentTok{# remove elements that are ''}
 \KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x %in%}\StringTok{ }\NormalTok{stopwords)])}
 \CommentTok{# remove stopwords from}
-\CommentTok{# http://cpsievert.github.io/LDAvis/reviews/reviews.html compute the table}
-\CommentTok{# of terms:}
+\CommentTok{# http://cpsievert.github.io/LDAvis/reviews/reviews.html}
+\CommentTok{# compute the table of terms:}
 \NormalTok{n_min <-}\StringTok{ }\DecValTok{3}
 \NormalTok{term_table <-}\StringTok{ }\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(good2)) %>%}\StringTok{ }\KeywordTok{sort}\NormalTok{(}\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
 \NormalTok{term_table <-}\StringTok{ }\NormalTok{term_table[term_table >=}\StringTok{ }\NormalTok{n_min]}
@@ -554,29 +653,87 @@ Gibbs sampler) in the R statistical computing language (R Core Team,
 \NormalTok{G <-}\StringTok{ }\DecValTok{5000}
 \NormalTok{alpha <-}\StringTok{ }\FloatTok{0.02}
 \NormalTok{eta <-}\StringTok{ }\FloatTok{0.02}
-
 \CommentTok{# Fit the model:}
 \KeywordTok{library}\NormalTok{(lda)}
 \KeywordTok{set.seed}\NormalTok{(}\DecValTok{2016} \NormalTok{-}\StringTok{ }\DecValTok{3} \NormalTok{-}\StringTok{ }\DecValTok{22}\NormalTok{)}
-\NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }\DataTypeTok{vocab =} \NormalTok{vocab, }
-    \DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }\DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }
-    \DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }
+    \DataTypeTok{vocab =} \NormalTok{vocab, }\DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }
+    \DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(wordcloud)}
 \NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
     \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit1$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
-    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
-        \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
+    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }
+        \FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }\DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }
+        \DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
 \NormalTok{\}}
-\NormalTok{K <-}\StringTok{ }\DecValTok{30}
+\NormalTok{tweet_dir <-}\StringTok{ "data/tweets/"}
+\NormalTok{fns <-}\StringTok{ }\KeywordTok{dir}\NormalTok{(tweet_dir)}
+\NormalTok{out <-}\StringTok{ }\KeywordTok{character}\NormalTok{(}\DecValTok{0}\NormalTok{)}
+\NormalTok{for (file in fns) \{}
+    \NormalTok{tmp <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(tweet_dir, file), }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
+    \NormalTok{out <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(out, tmp)}
+\NormalTok{\}}
+\NormalTok{tweets <-}\StringTok{ }\NormalTok{out[out$lang ==}\StringTok{ "en"}\NormalTok{, ]}
+\NormalTok{tw_txt <-}\StringTok{ }\NormalTok{tweets$text}
+\KeywordTok{library}\NormalTok{(stringr)}
+\NormalTok{tw_words <-}\StringTok{ }\NormalTok{stringr::}\KeywordTok{str_split}\NormalTok{(tw_txt, }\DataTypeTok{pattern =} \StringTok{" "}\NormalTok{) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x ==}\StringTok{ }
+\StringTok{    ""}\NormalTok{)]) %>%}\StringTok{ }\CommentTok{# remove elements that are ''}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"&amp"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"(RT|via)((?:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{b}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{W*@}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w+)+)"}\NormalTok{, }
+    \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"@}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w+"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:punct:]]"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[[:digit:]]"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }
+\StringTok{    }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[^[:graph:]]"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }
+\StringTok{    }\CommentTok{# is this right???}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"http}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{w+"}\NormalTok{, }\StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"[ }\CharTok{\textbackslash{}t}\StringTok{]\{2,\}"}\NormalTok{, }
+    \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"^}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s+|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s+$"}\NormalTok{, }
+    \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }\StringTok{" "}\NormalTok{, }
+    \StringTok{""}\NormalTok{))}
+\CommentTok{# tw_words <- sapply(X = tw_words, FUN = function(x)}
+\CommentTok{# str_replace_all(x, 'http://t.co/[a-z,A-Z,0-9]*\{8\}',''))}
+\NormalTok{tw_words <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{X =} \NormalTok{tw_words, }\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace}\NormalTok{(x, }
+    \StringTok{"RT @[a-z,A-Z]*: "}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }
+    \StringTok{"#[a-z,A-Z]*"}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }
+    \StringTok{"@[a-z,A-Z]*"}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }\CommentTok{# remove whitesp}
+\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{tolower}\NormalTok{(x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x %in%}\StringTok{ }
+\StringTok{    }\NormalTok{tm::}\KeywordTok{stopwords}\NormalTok{(}\StringTok{"SMART"}\NormalTok{))])}
+\CommentTok{# remove stopwords remove 'rt' and ''}
+\NormalTok{tw_words <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{X =} \NormalTok{tw_words, }\DataTypeTok{FUN =} \NormalTok{function(x) x[!(x %in%}\StringTok{ }
+\StringTok{    }\KeywordTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"rt"}\NormalTok{))])}
+\CommentTok{# from http://cpsievert.github.io/LDAvis/reviews/reviews.html}
+\CommentTok{# compute the table of terms:}
+\NormalTok{n_min <-}\StringTok{ }\DecValTok{3}
+\NormalTok{term_table <-}\StringTok{ }\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(tw_words)) %>%}\StringTok{ }\KeywordTok{sort}\NormalTok{(}\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{term_table <-}\StringTok{ }\NormalTok{term_table[term_table >=}\StringTok{ }\NormalTok{n_min]}
+\NormalTok{vocab <-}\StringTok{ }\KeywordTok{names}\NormalTok{(term_table)}
+\NormalTok{get_terms <-}\StringTok{ }\NormalTok{function(x) \{}
+    \NormalTok{index <-}\StringTok{ }\KeywordTok{match}\NormalTok{(x, vocab)}
+    \NormalTok{index <-}\StringTok{ }\NormalTok{index[!}\KeywordTok{is.na}\NormalTok{(index)]}
+    \KeywordTok{rbind}\NormalTok{(}\KeywordTok{as.integer}\NormalTok{(index -}\StringTok{ }\DecValTok{1}\NormalTok{), }\KeywordTok{as.integer}\NormalTok{(}\KeywordTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\KeywordTok{length}\NormalTok{(index))))}
+\NormalTok{\}}
+\NormalTok{documents <-}\StringTok{ }\KeywordTok{lapply}\NormalTok{(tw_words, get_terms)}
+\CommentTok{# Compute some statistics related to the data set:}
+\NormalTok{D <-}\StringTok{ }\KeywordTok{length}\NormalTok{(documents)  }\CommentTok{# number of documents }
+\NormalTok{W <-}\StringTok{ }\KeywordTok{length}\NormalTok{(vocab)  }\CommentTok{# number of terms in the vocab}
+\NormalTok{doc.length <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(documents, function(x) }\KeywordTok{sum}\NormalTok{(x[}\DecValTok{2}\NormalTok{, ]))  }\CommentTok{# number of tokens per document }
+\NormalTok{N <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(doc.length)  }\CommentTok{# total number of tokens in the data }
+\NormalTok{term.frequency <-}\StringTok{ }\KeywordTok{as.integer}\NormalTok{(term_table)  }\CommentTok{# frequencies of terms in the corpus}
+\CommentTok{# MCMC and model tuning parameters:}
+\NormalTok{K <-}\StringTok{ }\DecValTok{20}
+\NormalTok{G <-}\StringTok{ }\DecValTok{5000}
+\NormalTok{alpha <-}\StringTok{ }\FloatTok{0.02}
+\NormalTok{eta <-}\StringTok{ }\FloatTok{0.02}
+\CommentTok{# Fit the model:}
+\KeywordTok{library}\NormalTok{(lda)}
 \KeywordTok{set.seed}\NormalTok{(}\DecValTok{2016} \NormalTok{-}\StringTok{ }\DecValTok{3} \NormalTok{-}\StringTok{ }\DecValTok{22}\NormalTok{)}
-\NormalTok{fit2 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }\DataTypeTok{vocab =} \NormalTok{vocab, }
-    \DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }\DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }
-    \DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{fit1 <-}\StringTok{ }\KeywordTok{lda.collapsed.gibbs.sampler}\NormalTok{(}\DataTypeTok{documents =} \NormalTok{documents, }\DataTypeTok{K =} \NormalTok{K, }
+    \DataTypeTok{vocab =} \NormalTok{vocab, }\DataTypeTok{num.iterations =} \NormalTok{G, }\DataTypeTok{alpha =} \NormalTok{alpha, }\DataTypeTok{eta =} \NormalTok{eta, }
+    \DataTypeTok{initial =} \OtherTok{NULL}\NormalTok{, }\DataTypeTok{burnin =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{compute.log.likelihood =} \OtherTok{TRUE}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(wordcloud)}
 \NormalTok{for (i in }\DecValTok{1}\NormalTok{:K) \{}
-    \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit2$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
-    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }
-        \DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
+    \NormalTok{cloud.data <-}\StringTok{ }\KeywordTok{sort}\NormalTok{(fit1$topics[i, ], }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{)[}\DecValTok{1}\NormalTok{:}\DecValTok{50}\NormalTok{]}
+    \KeywordTok{wordcloud}\NormalTok{(}\KeywordTok{names}\NormalTok{(cloud.data), }\DataTypeTok{freq =} \NormalTok{cloud.data, }\DataTypeTok{scale =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }
+        \FloatTok{0.1}\NormalTok{), }\DataTypeTok{min.freq =} \DecValTok{1}\NormalTok{, }\DataTypeTok{rot.per =} \DecValTok{0}\NormalTok{, }\DataTypeTok{random.order =} \OtherTok{FALSE}\NormalTok{, }
+        \DataTypeTok{col =} \DecValTok{1} \NormalTok{+}\StringTok{ }\NormalTok{i%%}\DecValTok{4}\NormalTok{)}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -639,9 +796,20 @@ Hofmann, T. (1999). Probabilistic latent semantic indexing. In
 \emph{Proceedings of the 22nd annual international aCM sIGIR conference
 on research and development in information retrieval} (pp. 50--57). ACM.
 
+\hypertarget{ref-li2006pachinko}{}
+Li, W., \& McCallum, A. (2006). Pachinko allocation: DAG-structured
+mixture models of topic correlations. In \emph{Proceedings of the 23rd
+international conference on machine learning} (pp. 577--584). ACM.
+
 \hypertarget{ref-mimno2016topic}{}
 Mimno, D. (2016). Topic modeling bibliography. Retrieved from
 \url{http://mimno.infosci.cornell.edu/topics.html}
+
+\hypertarget{ref-mimno2011bayesian}{}
+Mimno, D., \& Blei, D. (2011). Bayesian checking for topic models. In
+\emph{Proceedings of the conference on empirical methods in natural
+language processing} (pp. 227--237). Association for Computational
+Linguistics.
 
 \hypertarget{ref-pritchard2000inference}{}
 Pritchard, J. K., Stephens, M., \& Donnelly, P. (2000). Inference of
@@ -662,5 +830,10 @@ the 20th conference on uncertainty in artificial intelligence} (pp.
 \hypertarget{ref-roy2013victorian}{}
 Roy, C., DeRose, C., \& Boehm, F. (2013). Victorian eyes. Retrieved from
 \url{http://victorianeyes.com}
+
+\hypertarget{ref-r-LDAvis}{}
+Sievert, C., \& Shirley, K. (2015). \emph{LDAvis: Interactive
+visualization of topic models}. Retrieved from
+\url{https://CRAN.R-project.org/package=LDAvis}
 
 \end{document}
