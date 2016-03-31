@@ -152,23 +152,22 @@ to communications researchers.
 
 \section{Motivation}\label{motivation}
 
-We are in the big data era. Social media inundates us with status
+We are in the big data era. Social media users inundate us with status
 updates and tweets, while bloggers share their views on current events.
 These new media interact with more established media, such as print news
 media, television, and radio. What do they have in common? One answer is
 that they all can be viewed as data sources in which words - whether
 written or spoken, tweeted or blogged - are the data.
 
-Think about how we currently browse media. Let's suppose that we want to
-read about mass shootings. We might search for the key words ``mass''
-and ``shooting''. Doing so, we will find some articles that deal with
-mass shootings, but other results may deal with other types of
+Think about how we currently browse this data. Let's suppose that we
+want to read about mass shootings. We might search for the key words
+``mass'' and ``shooting''. Doing so, we will find some articles that
+deal with mass shootings, but other results may deal with other types of
 ``shootings'', such as film shooting or accidental shooting. Even if we
 specify that the two-word phrase ``mass shooting'' must appear in our
-results, we still may find some articles that merely mention mass
-shootings without focusing on one or more mass shootings. Whatismore,
-we'll miss relevant articles that don't happen to use the term ``mass
-shooting''.
+results, we will find some articles that merely mention mass shootings,
+and we'll miss relevant articles that don't explicitly use the term
+``mass shooting''.
 
 D. M. Blei (2012) envisions an alternative search strategy in which we
 search for articles that are \emph{about} ``mass shootings''. Some of
@@ -193,7 +192,7 @@ and interpretation of texts. We detail below, with limited use of
 statistical terminology, how these methods work and why they may be
 useful in communications research. We illustrate topic modeling methods
 in the analysis of all New York Times articles from three days in March
-2016. We also provide an appendix with computer code (in the R
+2016. We also provide an appendix with computer code (in the R computer
 programming language) that implements these methods.
 
 \section{Background}\label{background}
@@ -242,22 +241,22 @@ abundant.
 \end{figure}
 
 The perspective that guides our data analysis is based on ideas of the
-University of Wisconsin-Madison statistician George Box and coworkers.
-D. M. Blei (2014) uses the ideas of Box and colleagues in the specific
-case of iterative refinement of topic models. Box (1976) articulated a
-process of scientific inquiry and statistical collaboration in which
-scientists put forth a hypothesis about the natural world, and, with
-assistance and guidance from statisticians, design experiments to test
-the scientific hypothesis. After statistical analysis of the
-experimental data, the scientific hypothesis is refined, which leads to
-design and implementation of another experiment, and the iterative
-process between scientific hypothesis and experiment continues. Box
-(1976) also suggested that a statistician, working in collaboration with
-scientists, might use scientific questions as motivation to develop new
-statistical methods in experimental design and data analysis. In this
-sense, there is a second iterative loop by which a statistical
-researcher develops novel statistical methods because of their immediate
-need to answer a scientific research question.
+University of Wisconsin-Madison statistician George Box and coworkers
+{[}box1962useful{]}. D. M. Blei (2014) uses the ideas of Box and
+colleagues in the specific case of iterative refinement of topic models.
+Box (1976) articulated a process of scientific inquiry and statistical
+collaboration in which scientists put forth a hypothesis about the
+natural world, and, with assistance and guidance from statisticians,
+design experiments to test the scientific hypothesis. After statistical
+analysis of the experimental data, the scientific hypothesis is refined,
+which leads to design and implementation of another experiment, and the
+iterative process between scientific hypothesis and experiment
+continues. Box (1976) also suggested that a statistician, working in
+collaboration with scientists, might use scientific questions as
+motivation to develop new statistical methods in experimental design and
+data analysis. In this sense, there is a second iterative loop by which
+a statistical researcher develops novel statistical methods because of
+their immediate need to answer a scientific research question.
 
 D. M. Blei (2014) adapts these iterative processes to the case of latent
 variable models, such as LDA and other topic models. He argues that we
@@ -294,27 +293,11 @@ given collection of documents, which we term a ``corpus'' of documents,
 we assume that relatively few topics - on the order of 10 to 50 for most
 analyses - are present.
 
-We say that LDA is a generative model because we specify a joint
-probability distribution that allows generation of observed samples. In
-a more precise manner, we specify a probability distribution over topics
-(again, where topics are themselves probability distributions over
-words) that is shared by the corpus. Each document can be viewed as a
-draw from this probability distribution. The observed topic (probability
-distribution over words) tells us how the words are distributed.
-
 LDA models have a hiearchical structure in which words make up
 documents, and a collection of documents is a corpus. The corpus is
 assumed to have (unobserved) topics, or themes. The purposes of LDA,
 then, are to discover the unobserved topics from the texts and to
 characterize documents by the topics that they contain.
-
-We distinguish generative models from discriminative models. A
-generative model, such as LDA, is one in which we specify a joint
-probability distribution for all variables (including those that are
-unobserved) and, thus, enable the creation of observations. On the other
-hand, a discriminative model relies on a conditional probability
-distribution and doesn't permit generation of samples from the joint
-probability distribution.
 
 \subsection{LDA Assumptions}\label{lda-assumptions}
 
@@ -346,65 +329,39 @@ model topic evolution over time(D. M. Blei \& Lafferty, 2006). Other
 extensions of LDA attempt to account for correlations among topics (D.
 M. Blei \& Lafferty, 2007, Li \& McCallum (2006)).
 
-\section{LDA with statistical
-terminology}\label{lda-with-statistical-terminology}
+\section{LDA with print media}\label{lda-with-print-media}
 
-We can also describe LDA with more formal statistical terminology. We
-let \(\beta_1, \beta_2, ..., \beta_K\) be the \(K\) topics, where each
-\(\beta_k\) is a probability distribution over the vocabulary. Topic
-weights (or proportions) we denote by \(\theta_d\) for the \(d^{th}\)
-document. We let \(\theta_{d,k}\) be the topic proportion for topic
-\(k\) in document \(d\). Topic assignments for the \(d^{th}\) document
-are \(z_d\), where \(z_{d,n}\) is the topic assignment for the
-\(n^{th}\) word in the \(d^{th}\) document. Observed words for the
-\(d^{th}\) document are \(w_d\), where \(w_{d, n}\) is the \(n^{th}\)
-word for the \(d^{th}\) document.
-
-We then use the above notation to specify the joint probability
-distribution for all variables in the model:
-
-\[p(\beta_{1:K}, \theta_{1:D}, z_{1:D}, w_{1:D}) = \prod_{i = 1}^Kp(\beta_i)\prod_{d = 1}^Dp(\theta_d)\left( \prod_{n = 1}^N p(z_{d,n}|\theta_d)p(w_{d,n}|\beta_{1:K}, z_{d,n})\right)\]
-
-The vertical bars in the last expressions denote conditional
-probabilities. Note that the topic assignments \(z_{d,n}\) depend on the
-document's topic proportions. Whatismore, the observed word \(w_{d,n}\)
-has a probability distribution that depends on both the entire
-collection of topics, \(\beta_{1:K}\), and the topic, \(z_{d,n}\),
-assigned to that word.
-
-\section{Example of LDA with print
-media}\label{example-of-lda-with-print-media}
-
-An example may help to illustrate our approach. Let's suppose that we
-want to understand the themes, or topics, that appear in a collection of
-print media articles. One strategy is to read every article in the
-collection. We could then assign one or more themes to each article and,
-at the end of our analysis, we would have a collection of themes. An
-alternative approach is to use topic modeling to identify topics, which
-we treat as themes, in the collection of articles.
+Fitting LDA and related models of print media enables the user to
+discover topics. Let's suppose that we want to understand the themes
+that appear in a collection of print media articles. One strategy is to
+read every article in the collection. We could then assign one or more
+themes to each article and, at the end of our analysis, we would have a
+collection of themes. However, an alternative approach, in keeping with
+the theme-browsing ideas of D. M. Blei (2012), is to use LDA to identify
+topics, which we treat as themes, in the collection of articles.
 
 To demonstrate our topic modeling approach to discovering themes, or
 topics, in print media, we used the Lexis Nexis Academic database to
 acquire 746 New York Times (print) articles from March 19, 20, and 21 of
 2016.
 
-We read the raw downloaded text files into R, then partitioned the files
-into the 746 articles. To each article, we applied a series of text
-processing steps. We split each article into its distinct words and
-removed white space and punctuation before converting all text to
-lower-case. At this stage, we had a collection of words for each of the
-746 distinct articles. After removing words that occurred fewer than
-three times in the collection of articles and those that appeared on our
-``stop list'' of frequently occurring short words, including articles
-and prepositions, we created the vocabulary and the document-term
-matrix. We then used existing R code (from the ``lda'' R package) to
-perform collapsed Gibbs sampling to sample from the posterior
-probability distribution of the parameters. Note that this computational
-implementation requires us to specify the number of topics in the
-collection. We arbitrarily chose 20 topics for our initial topic models.
+We loaded the raw downloaded text files into a computer program called
+R, then partitioned the files into the 746 articles. To each article, we
+applied a series of text processing steps. We split each article into
+its distinct words and removed white space and punctuation before
+converting all text to lower-case. At this stage, we had a collection of
+words for each of the 746 distinct articles. After removing words that
+occurred fewer than three times in the collection of articles and those
+that appeared on our ``stop list'' of syntactical short words, including
+articles and prepositions. With the remaining words, we created the
+document-term matrix. The document-term matrix is much like an Excel
+spreadsheet, where each row represents a document from the corpus and
+each column represents a word from the vocabulary. The cells in the
+matrix contain the number of times that each word appears in each
+document. Entering the document-term matrix into a computer program (R),
+we fit an LDA model with 20 topics.
 
-\section{Example of LDA with social
-media}\label{example-of-lda-with-social-media}
+\section{LDA with social media}\label{lda-with-social-media}
 
 We downloaded tweets from the Twitter streaming API on the same three
 consecutive days (March 19, 20, 21 in 2016). Due to the large volume of
@@ -417,9 +374,11 @@ with a total of 193211 tweets.
 
 At this point, we made an important modeling decision in which we
 decided to treat each tweet as an independent document. This was an
-important decision because tweets are forced to be short (no more than
-140 characters in length) and because a single user may have multiple
-related tweets in our collection.
+important decision because tweets are forced, by Twitter, to be short
+(no more than 140 characters in length). Because of their short length,
+it may be incomplete to think of a single tweet as a full document. Yet,
+as we'll see in the Results section, the model fitting yielded
+interpretable topics.
 
 Processing our tweets requires removal of punctuation, URLs, and
 graphical characters that appear in tweets. After completing that step,
@@ -431,16 +390,14 @@ print media analysis, we chose to fit topic models with 20 topics.
 Existing strategies for fitting topic models can be divided into two
 classes: 1. variational Bayes methods and 2. sampling methods.
 Variational Bayes methods try to approximate the posterior probability
-distribution by maximizing a lower bound. In this sense, variational
-Bayes methods approach topic model fitting from a computer science
-optimization perspective. Alternatively, sampling methods, such as those
-based on Markov chain monte carlo (MCMC) approaches, draw samples from
-(an approximation to) the posterior probability distribution and
-estimate distributional parameters by their empirical sample statistics.
+distribution by using optimization strategies from computer science.
+Alternatively, sampling methods, such as those based on Markov chain
+monte carlo (MCMC) approaches, draw samples from (an approximation to)
+the posterior probability distribution and work with those samples to
+approximate model parameters.
 
 Computational implementations of both classes of strategies are freely
-available for the R statistical computing language. We include R code in
-the appendix.
+available. We include R computing code in the appendix.
 
 \section{Interpreting results of topic
 modeling}\label{interpreting-results-of-topic-modeling}
@@ -453,7 +410,7 @@ topic may put heavy weights on the words ``genetics'', ``gene'',
 ``regulation'', ``DNA'', ``transcription'', and ``RNA''. The data
 analyst needs to identify the similarities among these words - namely,
 that they describe concepts related to genetics and molecular biology.
-Fortunately, topic modeling procedures often generate topics that can be
+Fortunately, topic modeling procedures often discover topics that can be
 summarized in one or two words once the data analyst has inspected the
 most heavily weighted terms (for a given topic).
 
@@ -488,17 +445,16 @@ Analysis}\label{results-from-new-york-times-articles-analysis}
 
 Examination of the resulting word clouds demonstrates that LDA is able
 to discover coherent themes from a text corpus. We see that our
-wordcloud in Figure \textasciitilde{}\ref{fig:wc1} contains words, such
-as ``ballet'', ``song'', ``music'', and ``film'', that constitute the
-theme that we can label as ``entertainment''. The wordcloud in Figure
-\textasciitilde{}\ref{fig:wc2} may be less clearly exhibiting a coherent
-theme, but it does contain a number of words, such as ``boat'',
-``river'', ``expedition'', related to travel \& adventure. Figure
-\textasciitilde{}\ref{fig:wc3} is difficult to interpret. On the one
+wordcloud in Figure \ref{fig:wc1} contains words, such as ``ballet'',
+``song'', ``music'', and ``film'', that constitute the theme that we can
+label as ``entertainment''. The wordcloud in Figure \ref{fig:wc2} may be
+less clearly exhibiting a coherent theme, but it does contain a number
+of words, such as ``boat'', ``river'', ``expedition'', related to travel
+\& adventure. Figure \ref{fig:wc3} is difficult to interpret. On the one
 hand, it contains ``books'', ``review'', and ``story'', which might
 suggest a literature theme, but at the same time it contains a
-collection of numbers. Figure \textasciitilde{}\ref{fig:wc4} forms a
-cohesive collection of words about sports.
+collection of numbers. Figure \ref{fig:wc4} forms a cohesive collection
+of words about sports.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{lda-tutorial-2016_files/figure-latex/wordcloud1-1.pdf}
@@ -547,13 +503,11 @@ Analysis}\label{results-from-tweets-analysis}
 
 We have presented preliminary results of our analysis of New York Times
 articles and tweets from March 19, 20, and 21, 2016. Looking back at
-Figure \textasciitilde{}\ref{fig:box}, we see that we haven't completed
-the iterative loop that D. M. Blei (2014) suggests. While D. M. Blei
-(2014) suggests that we critique the initial models using posterior
-predictive checks and other methods, we discovered meaningful topics in
-both the tweets and the New York Times articles with our initial models.
-Development of methods for model critiquing is one of our immediate
-research goals.
+Figure \ref{fig:box}, we see that we've omitted the model critiquing
+step (D. M. Blei, 2014). Despite this, we still managed to discover
+meaningful topics in both the tweets and the New York Times articles
+with our initial models. Development of model critiquing strategies is
+one of our immediate research goals.
 
 \section{Future directions}\label{future-directions}
 
@@ -590,8 +544,6 @@ the R statistical computing language (R Core Team, 2015).
 \NormalTok{opts_chunk$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{warning =} \OtherTok{FALSE}\NormalTok{, }
     \DataTypeTok{cache =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{tidy =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{tidy.opts =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{blank =} \OtherTok{FALSE}\NormalTok{, }
         \DataTypeTok{width.cutoff =} \DecValTok{60}\NormalTok{))  }\CommentTok{# hide source code in the document}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"devtools"}\NormalTok{)}
-\NormalTok{devtools::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"fboehm/wordtools"}\NormalTok{)}
 \NormalTok{tx1 <-}\StringTok{ }\KeywordTok{scan}\NormalTok{(}\DataTypeTok{file =} \StringTok{"data/The_New_York_Times2016-03-21_17-02.TXT"}\NormalTok{, }
     \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }
     \DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
@@ -599,7 +551,7 @@ the R statistical computing language (R Core Team, 2015).
     \DataTypeTok{what =} \StringTok{"character"}\NormalTok{, }\DataTypeTok{blank.lines.skip =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep =} \StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, }
     \DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
 \NormalTok{tx <-}\StringTok{ }\KeywordTok{c}\NormalTok{(tx1, tx2)}
-\KeywordTok{library}\NormalTok{(wordtools)  }\CommentTok{#load my R package 'wordtools'}
+\KeywordTok{library}\NormalTok{(wordtools)  }\CommentTok{#load R package 'wordtools'}
 \NormalTok{tx_list <-}\StringTok{ }\KeywordTok{split_tx}\NormalTok{(}\DataTypeTok{tx =} \NormalTok{tx, }\DataTypeTok{patt =} \StringTok{"Copyright 20"}\NormalTok{)}
 \KeywordTok{library}\NormalTok{(stringr)}
 \NormalTok{tx_list2 <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) x[-(}\DecValTok{1}\NormalTok{:}\KeywordTok{which}\NormalTok{(}\KeywordTok{str_detect}\NormalTok{(}\DataTypeTok{string =} \NormalTok{x, }
@@ -688,8 +640,6 @@ the R statistical computing language (R Core Team, 2015).
     \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{gsub}\NormalTok{(}\StringTok{"^}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s+|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s+$"}\NormalTok{, }
     \StringTok{""}\NormalTok{, x)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }\StringTok{" "}\NormalTok{, }
     \StringTok{""}\NormalTok{))}
-\CommentTok{# tw_words <- sapply(X = tw_words, FUN = function(x)}
-\CommentTok{# str_replace_all(x, 'http://t.co/[a-z,A-Z,0-9]*\{8\}',''))}
 \NormalTok{tw_words <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{X =} \NormalTok{tw_words, }\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace}\NormalTok{(x, }
     \StringTok{"RT @[a-z,A-Z]*: "}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }
     \StringTok{"#[a-z,A-Z]*"}\NormalTok{, }\StringTok{""}\NormalTok{)) %>%}\StringTok{ }\KeywordTok{sapply}\NormalTok{(}\DataTypeTok{FUN =} \NormalTok{function(x) }\KeywordTok{str_replace_all}\NormalTok{(x, }
@@ -737,6 +687,32 @@ the R statistical computing language (R Core Team, 2015).
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
+
+\section{LDA with statistical
+terminology}\label{lda-with-statistical-terminology}
+
+We can also describe LDA with more formal statistical terminology. We
+let \(\beta_1, \beta_2, ..., \beta_K\) be the \(K\) topics, where each
+\(\beta_k\) is a probability distribution over the vocabulary. Topic
+weights (or proportions) we denote by \(\theta_d\) for the \(d^{th}\)
+document. We let \(\theta_{d,k}\) be the topic proportion for topic
+\(k\) in document \(d\). Topic assignments for the \(d^{th}\) document
+are \(z_d\), where \(z_{d,n}\) is the topic assignment for the
+\(n^{th}\) word in the \(d^{th}\) document. Observed words for the
+\(d^{th}\) document are \(w_d\), where \(w_{d, n}\) is the \(n^{th}\)
+word for the \(d^{th}\) document.
+
+We then use the above notation to specify the joint probability
+distribution for all variables in the model:
+
+\[p(\beta_{1:K}, \theta_{1:D}, z_{1:D}, w_{1:D}) = \prod_{i = 1}^Kp(\beta_i)\prod_{d = 1}^Dp(\theta_d)\left( \prod_{n = 1}^N p(z_{d,n}|\theta_d)p(w_{d,n}|\beta_{1:K}, z_{d,n})\right)\]
+
+The vertical bars in the last expressions denote conditional
+probabilities. Note that the topic assignments \(z_{d,n}\) depend on the
+document's topic proportions. Whatismore, the observed word \(w_{d,n}\)
+has a probability distribution that depends on both the entire
+collection of topics, \(\beta_{1:K}\), and the topic, \(z_{d,n}\),
+assigned to that word.
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
