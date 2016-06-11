@@ -41,9 +41,6 @@ library(knitr)
 opts_chunk$set(echo=FALSE, message = FALSE, warning = FALSE, cache = TRUE, tidy = TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60)) # hide source code in the document
 ```
 
-```{r install-libs, eval = FALSE}
-
-```
 
 
 ```{r read-nyt}
