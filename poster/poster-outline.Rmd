@@ -7,3 +7,17 @@ output: html_document
 
 ## Abstract
 
+
+## What is a topic model? 
+
+
+
+## Why might topic models be useful in mass communications research? 
+
+
+## Examples
+
+
+## References
+
+

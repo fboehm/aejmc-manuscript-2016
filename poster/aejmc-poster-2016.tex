@@ -1,0 +1,194 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Landscape Poster
+% LaTeX Template
+% Version 1.0 (11/06/13)
+%
+% baposter Class Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[landscape,a0paper,fontscale=0.285]{baposter} % Adjust the font scale/size here
+
+\usepackage{graphicx} % Required for including images
+\usepackage{graphics}
+
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\usepackage{amsmath} % For typesetting math
+\usepackage{amssymb} % Adds new symbols to be used in math mode
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows, decorations}
+\usepackage{booktabs} % Top and bottom rules for tables
+\usepackage{enumitem} % Used to reduce itemize/enumerate spacing
+\usepackage{palatino} % Use the Palatino font
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+
+\usepackage{multicol} % Required for multiple columns
+\setlength{\columnsep}{1.5em} % Slightly increase the space between columns
+\setlength{\columnseprule}{0mm} % No horizontal rule between columns
+
+
+\newcommand{\compresslist}{ % Define a command to reduce spacing within itemize/enumerate environments, this is used right after \begin{itemize} or \begin{enumerate}
+\setlength{\itemsep}{1pt}
+\setlength{\parskip}{0pt}
+\setlength{\parsep}{0pt}
+}
+
+
+\begin{document}
+
+\begin{poster}
+{
+headerborder=closed, % Adds a border around the header of content boxes
+colspacing=1em, % Column spacing
+columns=3,
+bgColorOne=white, % Background color for the gradient on the left side of the poster
+bgColorTwo=white, % Background color for the gradient on the right side of the poster
+borderColor=red, % Border color
+headerColorOne=black, % Background color for the header in the content boxes (left side)
+headerColorTwo=red, % Background color for the header in the content boxes (right side)
+headerFontColor=white, % Text color for the header text in the content boxes
+boxColorOne=white, % Background color of the content boxes
+textborder=roundedleft, % Format of the border around content boxes, can be: none, bars, coils, triangles, rectangle, rounded, roundedsmall, roundedright or faded
+eyecatcher=true, % Set to false for ignoring the left logo in the title and move the title left
+headerheight=0.1\textheight, % Height of the header
+headershape=roundedright, % Specify the rounded corner in the content box headers, can be: rectangle, small-rounded, roundedright, roundedleft or rounded
+headerfont=\Large\bf\textsc, % Large, bold and sans serif font in the headers of content boxes
+%textfont={\setlength{\parindent}{1.5em}}, % Uncomment for paragraph indentation
+linewidth=2pt % Width of the border lines around content boxes
+}
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION 
+%----------------------------------------------------------------------------------------
+%
+{\includegraphics[height=4em]{UWlogo_fl_4c.png}} % First university/lab logo on the left
+{\bf\textsc{Data Analysis with Topic Models for Communications Research}}%\vspace{0.5em}} % Poster title
+{\textsc{ Frederick Boehm  \hspace{12pt} \\ Department of Statistics\\
+University of Wisconsin-Madison}} % Author names and institution
+{\includegraphics[height=4em]{UWCrest_4c.png}} % Second university/lab logo on the right
+
+%----------------------------------------------------------------------------------------
+%	OBJECTIVES
+%----------------------------------------------------------------------------------------
+
+\headerbox{Abstract}{name=objectives,column=0,row=0}{
+
+We introduce topic modeling as a tool when analyzing textual data. We illustrate our methods with analyses of New York Times transcripts and tweets from three days in March 2016. We argue that such analyses will be useful in mass communications and journalism research. 
+
+
+
+
+\vspace{0.3em} % When there are two boxes, some whitespace may need to be added if the one on the right has more content
+}
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\headerbox{Introduction}{name=introduction,column=0,below=objectives}{
+
+Social media users flood us with tweets, status updates, and blog posts. 
+}
+
+%----------------------------------------------------------------------------------------
+%	RESULTS 1
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%	REFERENCES
+%----------------------------------------------------------------------------------------
+
+\headerbox{References}{name=references,column=1,span=2,above=bottom}{
+
+\renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
+%\nocite{*} % Insert publications even if they are not cited in the poster
+\small{ % Reduce the font size in this block
+\bibliographystyle{unsrt}
+\bibliography{../twitter.bib} % Use sample.bib as the bibliography file
+}}
+
+%----------------------------------------------------------------------------------------
+%	FUTURE RESEARCH
+%----------------------------------------------------------------------------------------
+
+\headerbox{Future Research}{name=futureresearch,column=1,span=2,row=3}{ % This block is as tall as the references block
+
+\cite{blei2014build} discusses the need for a 
+}
+
+%----------------------------------------------------------------------------------------
+%	CONCLUSION
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+%	MATERIALS AND METHODS
+%----------------------------------------------------------------------------------------
+
+\headerbox{Methods}{name=method,column=0,below=introduction, above=bottom}{ % This block's bottom aligns with the bottom of the conclusion block
+After downloading tweets from Twitter's API, we processed tweets with our data cleaning pipeline to remove punctuation and to parse each tweet into its constituent words. We then fit LDA models to tweets.
+Finally, we visualized the topic modeling results with word clouds. 
+
+}
+
+%----------------------------------------------------------------------------------------
+%	RESULTS 2
+%----------------------------------------------------------------------------------------
+\headerbox{Results}{name=results2,column=1,span=2,row=0}{ 
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+\textbf{Time period} & \textbf{Time \& Date} & \textbf{Number of Collected Tweets}\\
+\midrule
+Before Super Bowl & 5:30am to 7am, February 1 &  41,110\\
+During Super Bowl & 5:30pm to 7pm, February 1 &  104,340\\
+After Super Bowl & 5:30am to 7am, February 2 &  36,880\\
+\bottomrule
+\end{tabular}
+\captionof{table}{Number of collected tweets varies for the three time periods, with a peak during the Super Bowl.}
+\end{center}
+
+\begin{multicols}{2}
+
+\begin{center}
+\includegraphics[width=0.8\linewidth]{"figures/sb topic 16 wordcloud".png}
+\captionof{figure}{During Super Bowl, game-related topic.}
+
+
+\includegraphics[width=0.8\linewidth]{"figures/pre-sb topic 15 wordcloud".png}
+\captionof{figure}{Pre-Super Bowl topic.}
+
+\includegraphics[width=0.8\linewidth]{"figures/sb topic 8 wordcloud".png}
+\captionof{figure}{During Super Bowl, game-related topic.}
+
+
+
+\includegraphics[width=0.8\linewidth]{"figures/post-sb topic 15 wordcloud".png}
+\captionof{figure}{Post-Super Bowl, game-related topic.}
+\end{center}
+\end{multicols}
+
+}
+
+\headerbox{Discussion}{name=discussion,column=1,span=2,below=results2, above=references}{
+We discovered 5 to 10 Super Bowl-related topics (when fitting a 25-topic model) from tweets collected during the first half. Our next steps are to incorporate time into a flexible, dynamic topic modeling strategy. With such a modeling strategy, we may better account for time evolution of topics. With digital texts and media becoming ubiquitous, our methods have applications in many scholarly disciplines, including the social sciences and the humanities.
+} %end discussion
+
+%----------------------------------------------------------------------------------------
+
+
+\end{poster}
+
+\end{document}
