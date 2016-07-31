@@ -18,7 +18,7 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[landscape,a0paper,fontscale=0.285]{baposter} % Adjust the font scale/size here
+\documentclass[landscape,a0paper,fontscale=0.25]{baposter} % Adjust the font scale/size here
 
 \usepackage{graphicx} % Required for including images
 \usepackage{graphics}
@@ -73,8 +73,8 @@ linewidth=2pt % Width of the border lines around content boxes
 %----------------------------------------------------------------------------------------
 %
 {\includegraphics[height=4em]{UWlogo_fl_4c.png}} % First university/lab logo on the left
-{\bf\textsc{Data Analysis with Topic Models for Communications Research}}%\vspace{0.5em}} % Poster title
-{\textsc{ Frederick Boehm  \hspace{12pt} \\ Department of Statistics\\
+{\textsc{Data Analysis with Topic Models for Communications Researchers}}%\vspace{0.5em}} % Poster title
+{\normalsize\textsc{Frederick Boehm (fred.boehm@wisc.edu), Department of Statistics, 
 University of Wisconsin-Madison}} % Author names and institution
 {\includegraphics[height=4em]{UWCrest_4c.png}} % Second university/lab logo on the right
 
@@ -82,9 +82,9 @@ University of Wisconsin-Madison}} % Author names and institution
 %	OBJECTIVES
 %----------------------------------------------------------------------------------------
 
-\headerbox{Abstract}{name=objectives,column=0,row=0}{
+\headerbox{Abstract}{name=abstract,column=0,row=0}{
 
-We introduce topic modeling as a tool when analyzing textual data. We illustrate our methods with analyses of New York Times transcripts and tweets from three days in March 2016. We argue that such analyses will be useful in mass communications and journalism research. 
+We introduce topic modeling as a tool when analyzing textual data. We illustrate our methods with analyses of New York Times transcripts and tweets from three days in March 2016. We argue that such analyses will be useful in mass communications and journalism research. These methods are especially useful for identifying topics, or themes, in large collections of texts, when reading each piece individually is impractical.
 
 
 
@@ -96,10 +96,16 @@ We introduce topic modeling as a tool when analyzing textual data. We illustrate
 %	INTRODUCTION
 %----------------------------------------------------------------------------------------
 
-\headerbox{Introduction}{name=introduction,column=0,below=objectives}{
+\headerbox{Introduction}{name=introduction,column=0,below=abstract}{
 
-Social media users flood us with tweets, status updates, and blog posts. 
+Social media users flood us with tweets, status updates, and blog posts. Data analysis with topic models enable researchers to identify themes, or topics, in a collection of texts. We present results from separate analyses of 1) New York Times articles from March 19, 20, and 21, 2016 and 2) a collection of tweets (from Twitter) from the same three days. Our manuscript contains computing code to reproduce our findings.
+
+\includegraphics[scale = 0.32]{../box-blei-loop2.png}
+
 }
+
+
+
 
 %----------------------------------------------------------------------------------------
 %	RESULTS 1
@@ -123,10 +129,7 @@ Social media users flood us with tweets, status updates, and blog posts.
 %	FUTURE RESEARCH
 %----------------------------------------------------------------------------------------
 
-\headerbox{Future Research}{name=futureresearch,column=1,span=2,row=3}{ % This block is as tall as the references block
 
-\cite{blei2014build} discusses the need for a 
-}
 
 %----------------------------------------------------------------------------------------
 %	CONCLUSION
@@ -138,8 +141,11 @@ Social media users flood us with tweets, status updates, and blog posts.
 %----------------------------------------------------------------------------------------
 
 \headerbox{Methods}{name=method,column=0,below=introduction, above=bottom}{ % This block's bottom aligns with the bottom of the conclusion block
-After downloading tweets from Twitter's API, we processed tweets with our data cleaning pipeline to remove punctuation and to parse each tweet into its constituent words. We then fit LDA models to tweets.
-Finally, we visualized the topic modeling results with word clouds. 
+\begin{enumerate}
+\item Fit latent Dirichlet allocation (LDA) models, separately, to 1) our collection of tweets and 2) our collection of print media articles from the New York Times
+\item Visualized the topic modeling results with word clouds 
+\item Assessed resulting topics for coherence
+\end{enumerate}
 
 }
 
@@ -147,43 +153,32 @@ Finally, we visualized the topic modeling results with word clouds.
 %	RESULTS 2
 %----------------------------------------------------------------------------------------
 \headerbox{Results}{name=results2,column=1,span=2,row=0}{ 
-\begin{center}
-\begin{tabular}{c c c}
-\toprule
-\textbf{Time period} & \textbf{Time \& Date} & \textbf{Number of Collected Tweets}\\
-\midrule
-Before Super Bowl & 5:30am to 7am, February 1 &  41,110\\
-During Super Bowl & 5:30pm to 7pm, February 1 &  104,340\\
-After Super Bowl & 5:30am to 7am, February 2 &  36,880\\
-\bottomrule
-\end{tabular}
-\captionof{table}{Number of collected tweets varies for the three time periods, with a peak during the Super Bowl.}
-\end{center}
 
 \begin{multicols}{2}
 
 \begin{center}
-\includegraphics[width=0.8\linewidth]{"figures/sb topic 16 wordcloud".png}
-\captionof{figure}{During Super Bowl, game-related topic.}
+\includegraphics[scale = 0.8]{../lda-tutorial-2016_files/figure-latex/tw-wordcloud1-4.pdf}
+\captionof{figure}{Word cloud for one topic (from a 20-topic model) of tweets from March 19, 20, and 21, 2016.}
 
 
-\includegraphics[width=0.8\linewidth]{"figures/pre-sb topic 15 wordcloud".png}
-\captionof{figure}{Pre-Super Bowl topic.}
-
-\includegraphics[width=0.8\linewidth]{"figures/sb topic 8 wordcloud".png}
-\captionof{figure}{During Super Bowl, game-related topic.}
-
+\includegraphics[scale = 0.8]{../lda-tutorial-2016_files/figure-latex/tw-wordcloud1-3.pdf}
+\captionof{figure}{Word cloud for one topic (from a 20-topic model) of tweets from March 19, 20, and 21, 2016.}
+\includegraphics[scale = 0.8]{../lda-tutorial-2016_files/figure-latex/wordcloud1-1.pdf}
+\captionof{figure}{Word cloud for one topic (from a 20-topic model) of New York Times articles from March 19, 20, and 21, 2016.}
 
 
-\includegraphics[width=0.8\linewidth]{"figures/post-sb topic 15 wordcloud".png}
-\captionof{figure}{Post-Super Bowl, game-related topic.}
+
+\includegraphics[scale = 0.6]{../lda-tutorial-2016_files/figure-latex/wordcloud1-2.pdf}
+\captionof{figure}{Word cloud for one topic (from a 20-topic model) of New York Times articles from March 19, 20, and 21, 2016.}
 \end{center}
 \end{multicols}
 
 }
 
 \headerbox{Discussion}{name=discussion,column=1,span=2,below=results2, above=references}{
-We discovered 5 to 10 Super Bowl-related topics (when fitting a 25-topic model) from tweets collected during the first half. Our next steps are to incorporate time into a flexible, dynamic topic modeling strategy. With such a modeling strategy, we may better account for time evolution of topics. With digital texts and media becoming ubiquitous, our methods have applications in many scholarly disciplines, including the social sciences and the humanities.
+
+
+
 } %end discussion
 
 %----------------------------------------------------------------------------------------
